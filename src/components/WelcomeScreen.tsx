@@ -1,6 +1,8 @@
 
-import { Button } from "@/components/ui/button";
-import { Sparkles, Palette, Heart, Star, Cloud } from "lucide-react";
+import React from "react";
+
+// Use the uploaded image as the center feature image.
+// The title text is made to match the image's design and font suggestions.
 
 interface WelcomeScreenProps {
   onStartNow: () => void;
@@ -8,115 +10,61 @@ interface WelcomeScreenProps {
 
 export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-pink-100 flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Floating decorative elements */}
-      <div className="absolute top-16 left-8 animate-float">
-        <Star className="w-8 h-8 text-yellow-500 fill-yellow-400" />
-      </div>
-      <div className="absolute top-24 right-12 animate-float" style={{ animationDelay: '0.5s' }}>
-        <Heart className="w-7 h-7 text-pink-400 fill-pink-400" />
-      </div>
-      <div className="absolute top-40 left-20 animate-float" style={{ animationDelay: '1s' }}>
-        <Sparkles className="w-7 h-7 text-purple-400" />
-      </div>
-      <div className="absolute bottom-60 right-16 animate-float" style={{ animationDelay: '1.5s' }}>
-        <Star className="w-6 h-6 text-orange-400 fill-orange-400" />
-      </div>
-      <div className="absolute top-60 right-6 animate-float" style={{ animationDelay: '2s' }}>
-        <Heart className="w-8 h-8 text-red-300 fill-red-300" />
-      </div>
-      <div className="absolute bottom-80 left-12 animate-float" style={{ animationDelay: '2.5s' }}>
-        <Sparkles className="w-6 h-6 text-teal-400" />
-      </div>
-      <div className="absolute top-80 left-6 animate-float" style={{ animationDelay: '3s' }}>
-        <Star className="w-5 h-5 text-indigo-400 fill-indigo-400" />
-      </div>
-
-      {/* Main content */}
-      <div className="text-center max-w-md w-full animate-fade-in">
-        {/* Title with cartoon style */}
-        <div className="mb-8">
-          <h1 className="font-chewy text-5xl md:text-6xl mb-4 transform -rotate-2 text-pink-500" 
-              style={{ 
-                textShadow: `
-                  3px 3px 0px #000000,
-                  -1px -1px 0px #000000,
-                  1px -1px 0px #000000,
-                  -1px 1px 0px #000000,
-                  0px 3px 0px #000000,
-                  3px 0px 0px #000000
-                `,
-                letterSpacing: '0.05em'
-              }}>
-            VANESSA'S
-          </h1>
-          <h2 className="font-chewy text-4xl md:text-5xl leading-tight transform rotate-1 text-teal-500"
-              style={{ 
-                textShadow: `
-                  3px 3px 0px #000000,
-                  -1px -1px 0px #000000,
-                  1px -1px 0px #000000,
-                  -1px 1px 0px #000000,
-                  0px 3px 0px #000000,
-                  3px 0px 0px #000000
-                `,
-                letterSpacing: '0.05em'
-              }}>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4 py-10">
+      {/* Centered Title */}
+      <div className="w-full max-w-md mx-auto text-center mb-8">
+        <div className="mb-2">
+          <span className="block text-black font-nunito font-extrabold text-base tracking-wide" style={{ letterSpacing: '0.04em' }}>
+            VANESSA&apos;S
+          </span>
+        </div>
+        <div>
+          <span className="block font-fredoka text-4xl md:text-5xl text-black font-extrabold leading-none tracking-tight" style={{ letterSpacing: '-0.01em' }}>
             LITTLE ART
-            <br />
-            <span className="text-yellow-500">CORNER</span>
-          </h2>
+          </span>
         </div>
-
-        {/* Cloud-shaped image container */}
-        <div className="mb-8 relative">
-          <div className="relative">
-            {/* Cloud shape using multiple rounded divs */}
-            <div className="relative w-80 h-64 mx-auto">
-              {/* Main cloud body */}
-              <div className="absolute bottom-0 left-8 right-8 h-32 bg-white rounded-full border-4 border-black shadow-lg"></div>
-              {/* Cloud bumps */}
-              <div className="absolute bottom-16 left-4 w-20 h-20 bg-white rounded-full border-4 border-black"></div>
-              <div className="absolute bottom-20 left-16 w-24 h-24 bg-white rounded-full border-4 border-black"></div>
-              <div className="absolute bottom-24 left-28 w-28 h-28 bg-white rounded-full border-4 border-black"></div>
-              <div className="absolute bottom-20 right-16 w-24 h-24 bg-white rounded-full border-4 border-black"></div>
-              <div className="absolute bottom-16 right-4 w-20 h-20 bg-white rounded-full border-4 border-black"></div>
-              <div className="absolute bottom-28 right-24 w-20 h-20 bg-white rounded-full border-4 border-black"></div>
-              
-              {/* Content inside cloud */}
-              <div className="absolute inset-0 flex items-center justify-center z-10 pb-4">
-                <div className="text-center">
-                  <Palette className="w-16 h-16 mx-auto mb-3 text-purple-600" />
-                  <p className="text-black font-sniglet font-bold text-lg">Your Art Here!</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div>
+          <span className="block font-fredoka text-4xl md:text-5xl text-black font-extrabold leading-none tracking-tight" style={{ letterSpacing: '-0.01em' }}>
+            CORNER
+          </span>
         </div>
+      </div>
 
-        {/* Start button with cartoon style */}
-        <Button 
-          onClick={onStartNow}
-          size="lg"
-          className="w-full py-6 text-2xl font-baloo font-bold rounded-3xl transition-all duration-300 hover:scale-105 border-4 border-black shadow-lg hover:shadow-xl bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white"
-          style={{ 
-            textShadow: '2px 2px 0px #000000',
-            letterSpacing: '0.05em'
+      {/* Centered Image in a thick white rounded frame */}
+      <div className="mb-10 w-full flex justify-center">
+        <div
+          className="bg-[#BEE6FD] flex items-center justify-center rounded-3xl border-8 border-white shadow-lg"
+          style={{
+            width: 340,
+            height: 340,
+            overflow: "hidden",
+            boxSizing: "border-box",
           }}
         >
-          START CREATING! ✨
-        </Button>
-
-        <p className="text-gray-700 text-lg mt-6 font-fredoka font-medium">
-          Generate • Color • Share Your Art!
-        </p>
+          <img
+            src="/lovable-uploads/afe66581-25b7-4114-9306-f9b7be26e040.png"
+            alt="Vanessa's Little Art Corner Welcome"
+            className="object-cover w-full h-full"
+            style={{
+              borderRadius: "1.25rem",
+              objectFit: "contain"
+            }}
+          />
+        </div>
       </div>
 
-      {/* MeshCode 2025 at bottom */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-        <p className="text-gray-600 font-fredoka font-medium text-sm">
-          MeshCode 2025
-        </p>
+      {/* Start Button */}
+      <button
+        onClick={onStartNow}
+        className="w-full max-w-md mx-auto py-4 px-6 bg-black text-white font-baloo text-xl rounded-full font-extrabold tracking-wide transition-transform duration-200 hover:scale-105 focus:outline-none shadow"
+        style={{ letterSpacing: '0.03em' }}
+      >
+        START CREATING!
+      </button>
+
+      {/* Footer */}
+      <div className="mt-10 text-gray-600 text-sm font-fredoka">
+        MeshCode 2025
       </div>
     </div>
   );
