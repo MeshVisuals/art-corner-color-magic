@@ -1,3 +1,4 @@
+
 import React from "react";
 
 interface OutlinedTextProps {
@@ -51,7 +52,7 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
         color,
         letterSpacing,
         WebkitTextStroke: `${outlineWidth}px ${outlineColor}`,
-        textStroke: `${outlineWidth}px ${outlineColor}`,
+        // textStroke property REMOVED – not type-safe or supported in React style
         textShadow:
           `
             -2px 2px 0 ${outlineColor},
