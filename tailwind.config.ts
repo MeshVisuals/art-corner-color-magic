@@ -21,6 +21,10 @@ export default {
 		extend: {
 			fontFamily: {
 				'nunito': ['Nunito', 'sans-serif'],
+				'baloo': ['Baloo 2', 'cursive'],
+				'fredoka': ['Fredoka', 'sans-serif'],
+				'chewy': ['Chewy', 'cursive'],
+				'sniglet': ['Sniglet', 'cursive'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
