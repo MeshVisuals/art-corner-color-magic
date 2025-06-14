@@ -3,80 +3,80 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
 
-/* Definition of the design system for Van's Little Art Corner */
+/* Definition of the design system for Vanessa's Little Art Corner */
 
 @layer base {
   :root {
     --background: 255 255 255;
-    --foreground: 30 27 75;
+    --foreground: 194 65 12;
 
     --card: 255 255 255;
-    --card-foreground: 30 27 75;
+    --card-foreground: 194 65 12;
 
     --popover: 255 255 255;
-    --popover-foreground: 30 27 75;
+    --popover-foreground: 194 65 12;
 
-    --primary: 147 51 234;
+    --primary: 234 88 12;
     --primary-foreground: 255 255 255;
 
-    --secondary: 243 232 255;
-    --secondary-foreground: 88 28 135;
+    --secondary: 254 215 170;
+    --secondary-foreground: 154 52 18;
 
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 254 243 199;
+    --muted-foreground: 120 113 108;
 
-    --accent: 236 72 153;
+    --accent: 20 184 166;
     --accent-foreground: 255 255 255;
 
     --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
 
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 147 51 234;
+    --border: 251 191 36;
+    --input: 251 191 36;
+    --ring: 234 88 12;
 
     --radius: 1rem;
 
     --sidebar-background: 255 255 255;
-    --sidebar-foreground: 30 27 75;
-    --sidebar-primary: 147 51 234;
+    --sidebar-foreground: 194 65 12;
+    --sidebar-primary: 234 88 12;
     --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 243 232 255;
-    --sidebar-accent-foreground: 88 28 135;
-    --sidebar-border: 226 232 240;
-    --sidebar-ring: 147 51 234;
+    --sidebar-accent: 254 215 170;
+    --sidebar-accent-foreground: 154 52 18;
+    --sidebar-border: 251 191 36;
+    --sidebar-ring: 234 88 12;
   }
 
   .dark {
-    --background: 20 20 30;
-    --foreground: 250 250 250;
-    --card: 30 30 45;
-    --card-foreground: 250 250 250;
-    --popover: 30 30 45;
-    --popover-foreground: 250 250 250;
-    --primary: 147 51 234;
+    --background: 45 55 72;
+    --foreground: 255 237 213;
+    --card: 55 65 81;
+    --card-foreground: 255 237 213;
+    --popover: 55 65 81;
+    --popover-foreground: 255 237 213;
+    --primary: 251 146 60;
     --primary-foreground: 255 255 255;
-    --secondary: 45 45 60;
-    --secondary-foreground: 200 200 220;
-    --muted: 40 40 55;
-    --muted-foreground: 140 140 160;
-    --accent: 236 72 153;
+    --secondary: 75 85 99;
+    --secondary-foreground: 229 231 235;
+    --muted: 75 85 99;
+    --muted-foreground: 156 163 175;
+    --accent: 45 212 191;
     --accent-foreground: 255 255 255;
     --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
-    --border: 60 60 80;
-    --input: 60 60 80;
-    --ring: 147 51 234;
-    --sidebar-background: 20 20 30;
-    --sidebar-foreground: 250 250 250;
-    --sidebar-primary: 147 51 234;
+    --border: 75 85 99;
+    --input: 75 85 99;
+    --ring: 251 146 60;
+    --sidebar-background: 45 55 72;
+    --sidebar-foreground: 255 237 213;
+    --sidebar-primary: 251 146 60;
     --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 45 45 60;
-    --sidebar-accent-foreground: 200 200 220;
-    --sidebar-border: 60 60 80;
-    --sidebar-ring: 147 51 234;
+    --sidebar-accent: 75 85 99;
+    --sidebar-accent-foreground: 229 231 235;
+    --sidebar-border: 75 85 99;
+    --sidebar-ring: 251 146 60;
   }
 }
 
@@ -91,31 +91,31 @@
 
   .font-balloony {
     font-family: 'Nunito', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.025em;
+    font-weight: 800;
+    letter-spacing: 0.05em;
   }
 
   .dreamy-gradient {
     background: linear-gradient(135deg, 
-      rgb(243, 232, 255) 0%, 
-      rgb(255, 255, 255) 35%, 
-      rgb(240, 249, 255) 70%, 
-      rgb(254, 249, 195) 100%);
+      rgb(45, 212, 191) 0%, 
+      rgb(252, 211, 77) 35%, 
+      rgb(251, 146, 60) 70%, 
+      rgb(239, 68, 68) 100%);
   }
 
   .balloon-frame {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 2rem;
-    border: 3px solid rgb(147, 51, 234);
-    box-shadow: 0 8px 32px rgba(147, 51, 234, 0.25);
+    border: 4px solid rgb(234, 88, 12);
+    box-shadow: 0 12px 48px rgba(234, 88, 12, 0.4);
   }
 
   .cozy-card {
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
     border-radius: 1.5rem;
-    border: 2px solid rgba(226, 232, 240, 0.8);
-    box-shadow: 0 12px 48px rgba(147, 51, 234, 0.15);
+    border: 3px solid rgba(251, 191, 36, 0.8);
+    box-shadow: 0 16px 64px rgba(234, 88, 12, 0.25);
   }
 
   .page-transition {
@@ -125,24 +125,44 @@
 
 @layer utilities {
   .text-shadow-soft {
-    text-shadow: 0 2px 8px rgba(147, 51, 234, 0.3);
+    text-shadow: 0 3px 12px rgba(234, 88, 12, 0.4);
   }
 
   .animate-float {
-    animation: float 6s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { 
+      transform: translateY(0px) rotate(0deg); 
+      opacity: 0.8;
+    }
+    25% { 
+      transform: translateY(-8px) rotate(5deg); 
+      opacity: 1;
+    }
+    50% { 
+      transform: translateY(-15px) rotate(-3deg); 
+      opacity: 0.9;
+    }
+    75% { 
+      transform: translateY(-5px) rotate(2deg); 
+      opacity: 1;
+    }
   }
 
   .animate-gentle-pulse {
-    animation: gentlePulse 3s ease-in-out infinite;
+    animation: gentlePulse 2.5s ease-in-out infinite;
   }
 
   @keyframes gentlePulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.95; transform: scale(1.02); }
+    0%, 100% { 
+      opacity: 1; 
+      transform: scale(1) rotate(0deg); 
+    }
+    50% { 
+      opacity: 0.95; 
+      transform: scale(1.03) rotate(1deg); 
+    }
   }
 }
