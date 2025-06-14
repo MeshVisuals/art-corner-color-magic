@@ -36,7 +36,7 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
       <div className="text-center max-w-md w-full animate-fade-in">
         {/* Title with cartoon style */}
         <div className="mb-8">
-          <h1 className="font-baloo font-extrabold text-5xl md:text-6xl mb-4 transform -rotate-2 text-pink-500" 
+          <h1 className="font-chewy text-5xl md:text-6xl mb-4 transform -rotate-2 text-pink-500" 
               style={{ 
                 textShadow: `
                   3px 3px 0px #000000,
@@ -50,7 +50,7 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
               }}>
             VANESSA'S
           </h1>
-          <h2 className="font-baloo font-extrabold text-4xl md:text-5xl leading-tight transform rotate-1 text-teal-500"
+          <h2 className="font-chewy text-4xl md:text-5xl leading-tight transform rotate-1 text-teal-500"
               style={{ 
                 textShadow: `
                   3px 3px 0px #000000,
@@ -87,7 +87,7 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
               <div className="absolute inset-0 flex items-center justify-center z-10 pb-4">
                 <div className="text-center">
                   <Palette className="w-16 h-16 mx-auto mb-3 text-purple-600" />
-                  <p className="text-black font-fredoka font-bold text-lg">Your Art Here!</p>
+                  <p className="text-black font-sniglet font-bold text-lg">Your Art Here!</p>
                 </div>
               </div>
             </div>
