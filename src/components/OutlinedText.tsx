@@ -1,4 +1,3 @@
-
 import React from "react";
 
 interface OutlinedTextProps {
@@ -76,4 +75,3 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
     </span>
   );
 };
-

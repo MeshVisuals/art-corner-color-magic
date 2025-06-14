@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
-// Removed GenerateScreen import
+import { GenerateScreen } from "@/components/GenerateScreen";
 import { PaintScreen } from "@/components/PaintScreen";
 
 type Screen = 'welcome' | 'generate' | 'paint';
@@ -32,20 +31,12 @@ const Index = () => {
       {currentScreen === 'welcome' && (
         <WelcomeScreen onStartNow={navigateToGenerate} />
       )}
-      
-      {/* The GenerateScreen is removed; nothing renders for 'generate' now */}
       {currentScreen === 'generate' && (
-        <div className="flex flex-col items-center justify-center py-32">
-          <div className="text-2xl font-bold text-red-400 mb-4">This page has been removed.</div>
-          <button
-            className="px-6 py-2 bg-primary text-white rounded-full font-bold shadow hover:bg-primary/90"
-            onClick={navigateBack}
-          >
-            Go Back
-          </button>
-        </div>
+        <GenerateScreen 
+          onBack={navigateBack}
+          onColorImage={navigateToPaint}
+        />
       )}
-      
       {currentScreen === 'paint' && currentImageUrl && (
         <PaintScreen 
           imageUrl={currentImageUrl}
