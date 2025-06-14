@@ -10,7 +10,7 @@ const titleOrange = "#EF7B24";
 const creamyYellow = "#FFE9B3";
 const buttonTeal = "#51C7B0";
 
-// Floating decorations data: shape, color, animation styles
+// Double the floating decoration quantity and vary positions/delays for fullness
 const decoConfigs = [
   {
     shape: "heart",
@@ -77,6 +77,129 @@ const decoConfigs = [
       animationDuration: "9.5s"
     },
     size: 18,
+  },
+  // --- Extra Decorations for fullness below ---
+  {
+    shape: "heart",
+    color: "#EF7B24",
+    style: {
+      left: "23vw",
+      top: "11vh",
+      animationDelay: "0.9s",
+      animationDuration: "9.2s",
+    },
+    size: 20,
+  },
+  {
+    shape: "star",
+    color: "#F7BB48",
+    style: {
+      right: "18vw",
+      top: "24vh",
+      animationDelay: "1.3s",
+      animationDuration: "8.6s"
+    },
+    size: 20,
+  },
+  {
+    shape: "heart",
+    color: "#F76B6B",
+    style: {
+      left: "5vw",
+      bottom: "31vh",
+      animationDelay: "3.1s",
+      animationDuration: "10.2s"
+    },
+    size: 30,
+  },
+  {
+    shape: "star",
+    color: "#51C7B0",
+    style: {
+      right: "26vw",
+      bottom: "26vh",
+      animationDelay: "0.2s",
+      animationDuration: "12.4s"
+    },
+    size: 22,
+  },
+  {
+    shape: "sparkle",
+    color: "#FFF7E7",
+    style: {
+      left: "36vw",
+      top: "3vh",
+      animationDelay: "0.9s",
+      animationDuration: "9.7s"
+    },
+    size: 20,
+  },
+  {
+    shape: "sparkle",
+    color: "#F6D098",
+    style: {
+      right: "3vw",
+      bottom: "22vh",
+      animationDelay: "1.6s",
+      animationDuration: "7.9s"
+    },
+    size: 16,
+  },
+  // a few more for extra fullness
+  {
+    shape: "heart",
+    color: "#EF7B24",
+    style: {
+      left: "50vw",
+      bottom: "8vh",
+      animationDelay: "2.4s",
+      animationDuration: "12s",
+    },
+    size: 17,
+  },
+  {
+    shape: "star",
+    color: "#F7BB48",
+    style: {
+      left: "2vw",
+      top: "39vh",
+      animationDelay: "1.1s",
+      animationDuration: "10.6s"
+    },
+    size: 21,
+  },
+  {
+    shape: "heart",
+    color: "#F76B6B",
+    style: {
+      left: "41vw",
+      top: "30vh",
+      animationDelay: "2.9s",
+      animationDuration: "8.8s"
+    },
+    size: 21,
+  },
+  {
+    shape: "sparkle",
+    color: "#FFF7E7",
+    style: {
+      right: "22vw",
+      bottom: "11vh",
+      animationDelay: "2.2s",
+      animationDuration: "13s"
+    },
+    size: 22,
+  },
+  {
+    shape: "sparkle",
+    color: "#F6D098",
+    style: {
+      left: "57vw",
+      top: "25vh",
+      animationDelay: "1.8s",
+      animationDuration: "6.2s"
+    },
+    size: 15,
   }
 ];
 
@@ -230,9 +353,11 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         START CREATING!
       </button>
 
-      {/* Footer */}
-      <div className="mt-10 text-[#694020] text-xs font-fredoka opacity-70 z-30">
-        MeshCode 2025
+      {/* Footer - place absolutely at bottom for lowest placement */}
+      <div className="w-full flex justify-center absolute left-0 right-0" style={{ bottom: "10px", zIndex: 30 }}>
+        <div className="text-[#694020] text-xs font-fredoka opacity-70">
+          MeshCode 2025
+        </div>
       </div>
 
       {/* Floating Element Animation Keyframes */}
@@ -254,3 +379,4 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
     </div>
   );
 };
+
