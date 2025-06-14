@@ -23,10 +23,10 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
       {/* Main content */}
       <div className="text-center max-w-md w-full animate-fade-in">
         {/* Title */}
-        <h1 className="font-balloony text-4xl md:text-5xl font-bold text-foreground mb-8 text-shadow-soft leading-tight">
+        <h1 className="font-balloony text-4xl md:text-5xl font-bold text-slate-800 mb-8 text-shadow-soft leading-tight">
           Van's Little
           <br />
-          <span className="text-primary font-bold">Art Corner</span>
+          <span className="text-purple-700 font-bold">Art Corner</span>
         </h1>
 
         {/* Illustration container */}
@@ -43,7 +43,7 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
               <path d="M75 120c5 10 15 15 25 15s20-5 25-15" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round"/>
             </svg>
           </div>
-          <p className="text-foreground font-medium mt-4 text-base">
+          <p className="text-slate-700 font-medium mt-4 text-base">
             Create • Color • Share
           </p>
         </div>
@@ -52,12 +52,12 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         <Button 
           onClick={onStartNow}
           size="lg"
-          className="w-full py-4 text-lg font-semibold rounded-2xl bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 border-primary"
+          className="w-full py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-2 border-purple-600"
         >
           Start Creating ✨
         </Button>
 
-        <p className="text-slate-600 text-sm mt-6 font-medium">
+        <p className="text-slate-700 text-sm mt-6 font-semibold">
           Generate coloring book art • Paint digitally • Export your creations
         </p>
       </div>
