@@ -1,6 +1,6 @@
-
 import React from "react";
 import { FloatingDecor } from "./FloatingDecor";
+import { OutlinedText } from "./OutlinedText";
 
 // Cartoon palette from the reference
 const skyBlue = "#67B6B2";
@@ -232,84 +232,90 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         ))}
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - Big cartoon-outlined title */}
       <div className="w-full max-w-xl mx-auto flex flex-col items-center relative z-30" style={{ marginBottom: "-2.0rem" }}>
-        {/* App Title (fun, thick, cartoon style) */}
+        {/* App Title */}
         <div
-          className="text-center font-extrabold select-none"
+          className="text-center select-none"
           style={{
-            fontFamily: "'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive",
-            fontSize: "2.5rem",
-            letterSpacing: "0.04em",
-            transform: "skewY(-5deg) rotate(-2.5deg)",
-            color: "#FFF6DC",
-            textShadow: `
-              -4px 4px 0 ${outline},
-              2px 3px 0 #EF7B24,
-              0px 6px 40px rgba(0,0,0,0.13)
-            `,
-            lineHeight: "1.08",
             marginBottom: "-0.2em",
             position: "relative",
             zIndex: 2,
+            userSelect: "none",
             pointerEvents: "none"
           }}
         >
-          <span
+          <OutlinedText
+            text="VANESSA'S"
+            fontSize="2.35rem"
+            color="#EF7B24"
+            outlineColor="#181211"
+            outlineWidth={6}
+            fontFamily="'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive"
+            shadowColor="#EF7B24"
+            shadowOffset={3}
+            letterSpacing="0.12em"
+            skew={-10}
+            rotate={-3.7}
             style={{
-              color: titleOrange,
-              fontSize: "1.27em",
-              letterSpacing: "0.06em",
-              fontFamily: "'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive",
-              textShadow: `
-                -2.5px 2px 0 ${outline},
-                0px 2px 16px rgba(0,0,0,0.11)
-              `,
               display: "block",
-              marginBottom: "-0.40em"
+              marginBottom: "-0.42em"
             }}
-          >
-            VANESSA&apos;S
-          </span>
-          <span
+          />
+          <OutlinedText
+            text="LITTLE ART CORNER"
+            fontSize="2.12rem"
+            color="#FFE9B3"
+            outlineColor="#181211"
+            outlineWidth={6}
+            fontFamily="'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive"
+            shadowColor="#EF7B24"
+            shadowOffset={3}
+            letterSpacing="0.08em"
+            skew={-7}
+            rotate={-2.5}
             style={{
-              color: creamyYellow,
-              fontSize: "1em",
-              WebkitTextStroke: "2.5px #231B18",
-              textShadow: `
-                -2.5px 2px 0 ${outline},
-                3px 7px 18px rgba(0,0,0,0.12)
-              `,
-              padding: "0.01em 0",
-              borderRadius: "0.11em"
+              display: "block",
+              padding: "0.02em 0 0 0",
+              borderRadius: "0.16em",
+              marginTop: "-0.12em"
             }}
-          >
-            LITTLE ART CORNER
-          </span>
+          />
         </div>
-        {/* “Comfy and Cozy” Subheadline */}
+
+        {/* “Comfy and Cozy” Subheadline, also cartoon-outlined */}
         <div
-          className="font-fredoka text-lg md:text-xl mt-3 text-center"
+          className="mt-4 text-center"
           style={{
-            transform: "skewY(-4deg)",
-            color: outline,
             background: creamyYellow,
-            borderRadius: "1.2em",
+            borderRadius: "1.3em",
             display: "inline-block",
-            padding: "4px 24px 2px",
+            padding: "5px 23px 3px",
             border: `2.5px solid ${outline}`,
-            boxShadow: "0 2px 8px rgba(220,150,41,0.15)",
-            marginBottom: "-10px",
-            position: "relative",
-            top: "-10px",
+            boxShadow: "0 2px 8px rgba(220,150,41,0.13)",
+            top: "-11px",
             zIndex: 2,
             fontWeight: 800,
-            fontSize: "1.13em",
+            fontSize: "1.08em",
             pointerEvents: "none",
-            letterSpacing: "0.03em"
+            marginBottom: "-10px",
+            position: "relative"
           }}
         >
-          Comfy and Cozy
+          <OutlinedText
+            text="Comfy and Cozy"
+            fontSize="1.5rem"
+            color="#F7BB48"
+            outlineColor="#181211"
+            outlineWidth={4}
+            fontFamily="'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive"
+            shadowColor="#F7BB48"
+            shadowOffset={2}
+            letterSpacing="0.10em"
+            skew={-2}
+            rotate={-1.5}
+            style={{}}
+          />
         </div>
       </div>
 
@@ -379,4 +385,3 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
     </div>
   );
 };
-
