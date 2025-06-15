@@ -42,7 +42,7 @@ export const PaintToolbar = ({
   canRedo
 }: PaintToolbarProps) => {
   return (
-    <div className="cozy-card p-4 lg:col-span-1">
+    <div className="cozy-card p-4 lg:col-span-1" data-testid="paint-toolbar">
       <div className="space-y-6">
         {/* Tool Selection */}
         <div>
@@ -56,6 +56,7 @@ export const PaintToolbar = ({
                     size="sm"
                     onClick={() => setTool('brush')}
                     className="flex-1 rounded-xl"
+                    data-testid="tool-brush"
                   >
                     <Brush className="w-4 h-4 mr-1" />
                     Brush
@@ -74,6 +75,7 @@ export const PaintToolbar = ({
                     size="sm"
                     onClick={() => setTool('eraser')}
                     className="flex-1 rounded-xl"
+                    data-testid="tool-eraser"
                   >
                     <Eraser className="w-4 h-4 mr-1" />
                     Eraser
@@ -105,6 +107,7 @@ export const PaintToolbar = ({
             max={50}
             min={1}
             step={1}
+            data-testid="slider-size"
           />
         </div>
 
@@ -127,6 +130,7 @@ export const PaintToolbar = ({
               max={100}
               min={10}
               step={10}
+              data-testid="slider-opacity"
             />
           </div>
         )}
@@ -150,6 +154,7 @@ export const PaintToolbar = ({
                       style={{ backgroundColor: color }}
                       title={color}
                       aria-label={`Use color ${color}`}
+                      data-testid={`color-swatch-${color}`}
                     />
                   ))}
                 </div>
@@ -160,10 +165,12 @@ export const PaintToolbar = ({
             </Tooltip>
             
             {/* Custom Color Picker */}
-            <ColorPicker 
-              currentColor={currentColor}
-              onColorChange={setCurrentColor}
-            />
+            <div data-testid="color-picker">
+              <ColorPicker 
+                currentColor={currentColor}
+                onColorChange={setCurrentColor}
+              />
+            </div>
           </div>
         )}
 
@@ -180,6 +187,7 @@ export const PaintToolbar = ({
                     onClick={onUndo}
                     disabled={!canUndo}
                     className="flex-1 rounded-xl"
+                    data-testid="undo-btn"
                   >
                     <Undo2 className="w-4 h-4" />
                   </Button>
@@ -198,6 +206,7 @@ export const PaintToolbar = ({
                     onClick={onRedo}
                     disabled={!canRedo}
                     className="flex-1 rounded-xl"
+                    data-testid="redo-btn"
                   >
                     <Redo2 className="w-4 h-4" />
                   </Button>
@@ -223,3 +232,14 @@ export const PaintToolbar = ({
     </div>
   );
 };
+
+// Test ID reference documentation (for testing!):
+// - data-testid="paint-toolbar": overall toolbar container
+// - data-testid="tool-brush": brush select button
+// - data-testid="tool-eraser": eraser select button
+// - data-testid="slider-size": size slider
+// - data-testid="slider-opacity": opacity slider
+// - data-testid={`color-swatch-${color}`}: each preset color swatch (e.g., color-swatch-#FF6B6B')
+// - data-testid="color-picker": the custom color picker trigger/button
+// - data-testid="undo-btn": undo button
+// - data-testid="redo-btn": redo button
