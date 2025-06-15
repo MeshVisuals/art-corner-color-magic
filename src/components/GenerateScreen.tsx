@@ -8,6 +8,7 @@ import { PromptInput } from "./PromptInput";
 import { StyleSelector } from "./StyleSelector";
 import { UploadAndSkipButtons } from "./UploadAndSkipButtons";
 import { GenerateOrContinueButton } from "./GenerateOrContinueButton";
+import { ArrowLeft } from "lucide-react";
 
 interface GenerateScreenProps {
   onBack: () => void;
@@ -134,13 +135,15 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
     <div className="min-h-[70vh] flex flex-col items-center py-10 px-3 relative overflow-hidden">
       <FloatingDecorBackground />
       <div className="w-full max-w-xl p-7 flex flex-col gap-5 items-center relative" style={{ zIndex: 10 }}>
-        <button
-          className="absolute left-5 top-5 text-black/50 hover:text-black text-lg"
+        <Button
+          variant="cartoonOutline"
+          size="cartoon"
+          className="absolute left-5 top-5"
           onClick={onBack}
           aria-label="Go Back"
         >
-          ←
-        </button>
+          <ArrowLeft className="w-4 h-4" />
+        </Button>
         <h2 className="font-balloony text-3xl md:text-4xl mb-2 text-center">Generate an Image</h2>
         <ApiKeyInput
           apiKey={apiKey}
