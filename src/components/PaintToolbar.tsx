@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import { Brush, Eraser, Undo2, Redo2 } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { ColorPicker } from "./ColorPicker";
@@ -43,7 +42,7 @@ export const PaintToolbar = ({
   canRedo
 }: PaintToolbarProps) => {
   return (
-    <Card className="cozy-card p-4 lg:col-span-1">
+    <div className="cozy-card p-4 lg:col-span-1">
       <div className="space-y-6">
         {/* Tool Selection */}
         <div>
@@ -221,6 +220,6 @@ export const PaintToolbar = ({
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
