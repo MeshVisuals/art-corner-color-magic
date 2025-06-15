@@ -210,36 +210,55 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
               <div>
                 <Label className="text-sm font-medium mb-3 block">Tools</Label>
                 <div className="flex gap-2">
-                  <Tooltip content="Brush: draw/color!" side="bottom"><span>
-                    <Button
-                      variant={tool === 'brush' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setTool('brush')}
-                      className="flex-1 rounded-xl"
-                    >
-                      <Brush className="w-4 h-4 mr-1" />
-                      Brush
-                    </Button>
-                  </span></Tooltip>
-                  <Tooltip content="Eraser: fix mistakes" side="bottom"><span>
-                    <Button
-                      variant={tool === 'eraser' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setTool('eraser')}
-                      className="flex-1 rounded-xl"
-                    >
-                      <Eraser className="w-4 h-4 mr-1" />
-                      Eraser
-                    </Button>
-                  </span></Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <Button
+                          variant={tool === 'brush' ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setTool('brush')}
+                          className="flex-1 rounded-xl"
+                        >
+                          <Brush className="w-4 h-4 mr-1" />
+                          Brush
+                        </Button>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      Brush: draw/color!
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <Button
+                          variant={tool === 'eraser' ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setTool('eraser')}
+                          className="flex-1 rounded-xl"
+                        >
+                          <Eraser className="w-4 h-4 mr-1" />
+                          Eraser
+                        </Button>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      Eraser: fix mistakes
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
 
               {/* Brush Size */}
               <div>
                 <Label className="text-sm font-medium mb-3 block">
-                  <Tooltip content="Choose brush/eraser size" side="top">
-                    <span>Size: {brushSize}px</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>Size: {brushSize}px</span>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      Choose brush/eraser size
+                    </TooltipContent>
                   </Tooltip>
                 </Label>
                 <Slider
@@ -255,8 +274,13 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
               {tool === 'brush' && (
                 <div>
                   <Label className="text-sm font-medium mb-3 block">
-                    <Tooltip content="Make brush paint more or less see-through" side="top">
-                      <span>Opacity: {brushOpacity}%</span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>Opacity: {brushOpacity}%</span>
+                      </TooltipTrigger>
+                      <TooltipContent side="top">
+                        Make brush paint more or less see-through
+                      </TooltipContent>
                     </Tooltip>
                   </Label>
                   <Slider
@@ -273,23 +297,28 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
               {tool === 'brush' && (
                 <div>
                   <Label className="text-sm font-medium mb-3 block">Colors</Label>
-                  <Tooltip content="Pick a color!" side="top">
-                  <div className="grid grid-cols-5 gap-2">
-                    {colors.map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setCurrentColor(color)}
-                        className={`w-8 h-8 rounded-full border-2 transition-all ${
-                          currentColor === color 
-                            ? 'border-foreground scale-110' 
-                            : 'border-border hover:scale-105'
-                        }`}
-                        style={{ backgroundColor: color }}
-                        title={color}
-                        aria-label={`Use color ${color}`}
-                      />
-                    ))}
-                  </div>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="grid grid-cols-5 gap-2">
+                        {colors.map((color) => (
+                          <button
+                            key={color}
+                            onClick={() => setCurrentColor(color)}
+                            className={`w-8 h-8 rounded-full border-2 transition-all ${
+                              currentColor === color 
+                                ? 'border-foreground scale-110' 
+                                : 'border-border hover:scale-105'
+                            }`}
+                            style={{ backgroundColor: color }}
+                            title={color}
+                            aria-label={`Use color ${color}`}
+                          />
+                        ))}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      Pick a color!
+                    </TooltipContent>
                   </Tooltip>
                 </div>
               )}
@@ -298,28 +327,42 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
               <div>
                 <Label className="text-sm font-medium mb-3 block">History</Label>
                 <div className="flex gap-2">
-                  <Tooltip content="Undo last stroke" side="bottom"><span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={undo}
-                      disabled={historyIndex <= 0}
-                      className="flex-1 rounded-xl"
-                    >
-                      <Undo2 className="w-4 h-4" />
-                    </Button>
-                  </span></Tooltip>
-                  <Tooltip content="Redo" side="bottom"><span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={redo}
-                      disabled={historyIndex >= history.length - 1}
-                      className="flex-1 rounded-xl"
-                    >
-                      <Redo2 className="w-4 h-4" />
-                    </Button>
-                  </span></Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={undo}
+                          disabled={historyIndex <= 0}
+                          className="flex-1 rounded-xl"
+                        >
+                          <Undo2 className="w-4 h-4" />
+                        </Button>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      Undo last stroke
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={redo}
+                          disabled={historyIndex >= history.length - 1}
+                          className="flex-1 rounded-xl"
+                        >
+                          <Redo2 className="w-4 h-4" />
+                        </Button>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      Redo
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
             </div>
