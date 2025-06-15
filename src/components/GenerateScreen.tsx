@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { Loader2, ImagePlus } from "lucide-react";
 
 interface GenerateScreenProps {
@@ -21,7 +21,11 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   // Fake generation for demo; replace with real API call
   async function handleGenerate() {
     if (!prompt.trim()) {
-      toast({ title: "Enter a prompt!", description: "Try 'A dog on a skateboard'." });
+      toast({ 
+        title: "Enter a prompt!", 
+        description: "Try 'A dog on a skateboard'.",
+        className: "bg-blue-100 border-blue-200 text-blue-800"
+      });
       return;
     }
     setLoading(true);
@@ -43,7 +47,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
 
   return (
     <div className="min-h-[70vh] flex flex-col justify-center items-center py-10 px-3">
-      <div className="w-full max-w-xl balloon-frame p-7 flex flex-col gap-6 items-center shadow-lg relative">
+      <div className="w-full max-w-xl p-7 flex flex-col gap-6 items-center relative">
         <button
           className="absolute left-5 top-5 text-black/50 hover:text-black text-lg"
           onClick={onBack}
@@ -54,7 +58,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
         <h2 className="font-balloony text-3xl md:text-4xl mb-2 text-center">Generate an Image</h2>
         <div className="w-full flex flex-col md:flex-row gap-3">
           <Input
-            className="flex-1 text-lg md:text-base"
+            className="flex-1 text-lg md:text-base bg-purple-50 border-purple-200 focus:border-purple-300 focus:ring-purple-200"
             placeholder="Describe a picture to create (e.g., Cute elephant flying a kite!)"
             maxLength={100}
             value={prompt}
