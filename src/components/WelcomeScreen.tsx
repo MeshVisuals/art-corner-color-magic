@@ -254,18 +254,18 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         <div
           className="bg-white flex items-center justify-center rounded-3xl balloon-frame border-white"
           style={{
-            width: 400,                   // increased from 292
-            height: 400,                  // increased from 292
+            width: 400,
+            height: 400,
             overflow: "hidden",
             boxSizing: "border-box",
             position: "relative",
             zIndex: 1,
-            borderWidth: "8px",           // slightly thicker for larger size
+            borderWidth: "8px",
           }}
         >
           <img
-            src="/lovable-uploads/84079a02-d4a9-4396-84ac-0bc0297ce8cb.png"
-            alt="Vanessa and child cartoon in the park"
+            src="/lovable-uploads/0f9defed-ff18-4dd5-866b-3ff6c5fa3b5b.png"
+            alt="Vanessa's Little Art Corner: The Comfy and Cozy Series"
             className="object-contain w-full h-full"
             style={{
               borderRadius: "2rem",
