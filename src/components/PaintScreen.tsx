@@ -5,12 +5,72 @@ import { PaintToolbar } from "./PaintToolbar";
 import { PaintCanvas } from "./PaintCanvas";
 import { usePaintHistory } from "@/hooks/usePaintHistory";
 import { usePaintCanvas } from "@/hooks/usePaintCanvas";
+import { FloatingDecor } from "./FloatingDecor";
 
 interface PaintScreenProps {
   imageUrl: string;
   onBack: () => void;
   onStartOver: () => void;
 }
+
+// Floating decorations for the paint screen
+const paintDecoConfigs = [
+  {
+    shape: "heart",
+    color: "#EF7B24",
+    style: {
+      left: "5vw",
+      top: "12vh",
+      animationDelay: "0.5s",
+      animationDuration: "10s",
+    },
+    size: 20,
+  },
+  {
+    shape: "star",
+    color: "#F7BB48",
+    style: {
+      right: "8vw",
+      top: "8vh",
+      animationDelay: "1.2s",
+      animationDuration: "12s"
+    },
+    size: 18,
+  },
+  {
+    shape: "sparkle",
+    color: "#51C7B0",
+    style: {
+      left: "15vw",
+      bottom: "15vh",
+      animationDelay: "2.0s",
+      animationDuration: "8s"
+    },
+    size: 16,
+  },
+  {
+    shape: "heart",
+    color: "#F76B6B",
+    style: {
+      right: "12vw",
+      bottom: "20vh",
+      animationDelay: "0.8s",
+      animationDuration: "11s"
+    },
+    size: 22,
+  },
+  {
+    shape: "sparkle",
+    color: "#FFF7E7",
+    style: {
+      left: "50vw",
+      top: "5vh",
+      animationDelay: "1.8s",
+      animationDuration: "9s"
+    },
+    size: 14,
+  },
+];
 
 export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps) => {
   const [tool, setTool] = useState<'brush' | 'eraser'>('brush');
@@ -67,8 +127,30 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
   };
 
   return (
-    <div className="min-h-screen dreamy-gradient p-4">
-      <div className="max-w-6xl mx-auto">
+    <div 
+      className="min-h-screen p-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
+      }}
+    >
+      {/* Floating Decorations */}
+      <div className="pointer-events-none absolute inset-0 w-full h-full z-10">
+        {paintDecoConfigs.map((d, i) => (
+          <span
+            key={i}
+            className="absolute animate-floating-sway"
+            style={{
+              ...d.style,
+              animationDelay: d.style?.animationDelay ?? undefined,
+              animationDuration: d.style?.animationDuration ?? undefined
+            }}
+          >
+            <FloatingDecor shape={d.shape as any} color={d.color} size={d.size} />
+          </span>
+        ))}
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-20">
         <PaintHeader
           onBack={onBack}
           onStartOver={onStartOver}
@@ -100,6 +182,23 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
           />
         </div>
       </div>
+
+      {/* Floating Element Animation Keyframes */}
+      <style>{`
+      @keyframes floating-sway {
+        0%,100% { transform: translateY(0px) rotate(-8deg);}
+        24% { transform: translateY(-12px) rotate(8deg);}
+        44% { transform: translateY(-16px) rotate(1deg);}
+        68% { transform: translateY(-8px) rotate(-10deg);}
+        82% { transform: translateY(-3px) rotate(3deg);}
+      }
+      .animate-floating-sway {
+        animation-name: floating-sway;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-timing-function: cubic-bezier(.83,-0.19,.23,1.11);
+      }
+      `}</style>
     </div>
   );
 };

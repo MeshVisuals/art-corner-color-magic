@@ -43,7 +43,7 @@ export const PaintCanvas = ({
 
   return (
     <div className="lg:col-span-3">
-      <Card className="cozy-card p-4">
+      <div className="cozy-card p-6">
         <div className="w-full overflow-auto">
           <canvas
             ref={canvasRef}
@@ -54,11 +54,15 @@ export const PaintCanvas = ({
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="max-w-full h-auto border border-border rounded-lg cursor-crosshair touch-none"
-            style={{ maxHeight: '70vh' }}
+            className="max-w-full h-auto rounded-2xl cursor-crosshair touch-none"
+            style={{ 
+              maxHeight: '70vh',
+              border: '4px solid #2A2320',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+            }}
           />
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

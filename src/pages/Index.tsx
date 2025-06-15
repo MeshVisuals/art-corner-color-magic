@@ -47,7 +47,12 @@ const Index = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div 
+      className="relative min-h-screen"
+      style={{
+        background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
+      }}
+    >
       {/* Absolute containers for overlapping fade screens */}
       <AnimatedScreen show={currentScreen === 'welcome'}>
         <WelcomeScreen onStartNow={navigateToGenerate} />
