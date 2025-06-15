@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Brush, Eraser, Undo2, Redo2 } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { ColorPicker } from "./ColorPicker";
 
 interface PaintToolbarProps {
   tool: 'brush' | 'eraser';
@@ -137,7 +138,7 @@ export const PaintToolbar = ({
             <Label className="text-sm font-medium mb-3 block">Colors</Label>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-5 gap-2 mb-3">
                   {colors.map((color) => (
                     <button
                       key={color}
@@ -158,6 +159,12 @@ export const PaintToolbar = ({
                 Pick a color!
               </TooltipContent>
             </Tooltip>
+            
+            {/* Custom Color Picker */}
+            <ColorPicker 
+              currentColor={currentColor}
+              onColorChange={setCurrentColor}
+            />
           </div>
         )}
 
@@ -180,7 +187,7 @@ export const PaintToolbar = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                Undo last stroke
+                Undo last stroke (Ctrl+Z)
               </TooltipContent>
             </Tooltip>
             <Tooltip>
@@ -198,9 +205,19 @@ export const PaintToolbar = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                Redo
+                Redo (Ctrl+Y)
               </TooltipContent>
             </Tooltip>
+          </div>
+        </div>
+
+        {/* Quick Tips */}
+        <div className="bg-secondary/10 rounded-lg p-3">
+          <Label className="text-xs font-medium block mb-1">💡 Quick Tips</Label>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div>• Use Ctrl+Z to undo</div>
+            <div>• Touch and drag on mobile</div>
+            <div>• Lower opacity for blending</div>
           </div>
         </div>
       </div>

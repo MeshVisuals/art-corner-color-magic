@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PaintHeader } from "./PaintHeader";
 import { PaintToolbar } from "./PaintToolbar";
 import { PaintCanvas } from "./PaintCanvas";
@@ -29,14 +29,39 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
     onSaveToHistory: saveToHistory
   });
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key) {
+          case 'z':
+            e.preventDefault();
+            if (e.shiftKey) {
+              handleRedo();
+            } else {
+              handleUndo();
+            }
+            break;
+          case 'y':
+            e.preventDefault();
+            handleRedo();
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [canUndo, canRedo]);
+
   const handleUndo = () => {
-    if (canvasRef.current) {
+    if (canvasRef.current && canUndo) {
       undo(canvasRef.current);
     }
   };
 
   const handleRedo = () => {
-    if (canvasRef.current) {
+    if (canvasRef.current && canRedo) {
       redo(canvasRef.current);
     }
   };
