@@ -19,11 +19,11 @@ export const HistoryControls = ({ onUndo, onRedo, canUndo, canRedo }: HistoryCon
         <TooltipTrigger asChild>
           <span>
             <Button
-              variant="outline"
-              size="sm"
+              variant={canUndo ? "cartoonOutline" : "cartoonOutline"}
+              size="cartoon"
               onClick={onUndo}
               disabled={!canUndo}
-              className="flex-1 rounded-xl"
+              className="flex-1"
               data-testid="undo-btn"
             >
               <Undo2 className="w-4 h-4" />
@@ -38,11 +38,11 @@ export const HistoryControls = ({ onUndo, onRedo, canUndo, canRedo }: HistoryCon
         <TooltipTrigger asChild>
           <span>
             <Button
-              variant="outline"
-              size="sm"
+              variant={canRedo ? "cartoonOutline" : "cartoonOutline"}
+              size="cartoon"
               onClick={onRedo}
               disabled={!canRedo}
-              className="flex-1 rounded-xl"
+              className="flex-1"
               data-testid="redo-btn"
             >
               <Redo2 className="w-4 h-4" />
@@ -56,4 +56,3 @@ export const HistoryControls = ({ onUndo, onRedo, canUndo, canRedo }: HistoryCon
     </div>
   </div>
 );
-
