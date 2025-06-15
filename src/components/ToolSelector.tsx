@@ -17,10 +17,10 @@ export const ToolSelector = ({ tool, setTool }: ToolSelectorProps) => (
         <TooltipTrigger asChild>
           <span>
             <Button
-              variant={tool === 'brush' ? 'default' : 'outline'}
-              size="sm"
+              variant={tool === 'brush' ? 'cartoon' : 'cartoonOutline'}
+              size="cartoon"
               onClick={() => setTool('brush')}
-              className="flex-1 rounded-xl"
+              className="flex-1"
               data-testid="tool-brush"
             >
               <Brush className="w-4 h-4 mr-1" />
@@ -36,10 +36,10 @@ export const ToolSelector = ({ tool, setTool }: ToolSelectorProps) => (
         <TooltipTrigger asChild>
           <span>
             <Button
-              variant={tool === 'eraser' ? 'default' : 'outline'}
-              size="sm"
+              variant={tool === 'eraser' ? 'cartoon' : 'cartoonOutline'}
+              size="cartoon"
               onClick={() => setTool('eraser')}
-              className="flex-1 rounded-xl"
+              className="flex-1"
               data-testid="tool-eraser"
             >
               <Eraser className="w-4 h-4 mr-1" />
@@ -54,4 +54,3 @@ export const ToolSelector = ({ tool, setTool }: ToolSelectorProps) => (
     </div>
   </div>
 );
-

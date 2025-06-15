@@ -22,6 +22,13 @@ const STYLES = [
   { key: "manga", label: "Manga" },
 ];
 
+// Preset images from uploads to use when skipping
+const PRESET_IMAGES = [
+  "/lovable-uploads/0f9defed-ff18-4dd5-866b-3ff6c5fa3b5b.png",
+  "/lovable-uploads/84079a02-d4a9-4396-84ac-0bc0297ce8cb.png",
+  "/lovable-uploads/afe66581-25b7-4114-9306-f9b7be26e040.png"
+];
+
 // Simulate API key validation: just check length >= 10
 function validateApiKey(key: string) {
   return key.trim().length >= 10;
@@ -87,12 +94,14 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   }
 
   function handleSkip() {
+    // Select a random preset image from the uploads
+    const randomImage = PRESET_IMAGES[Math.floor(Math.random() * PRESET_IMAGES.length)];
     toast({
-      title: "Skipped image generation.",
-      description: "You'll start coloring right away!",
+      title: "Skipped image generation!",
+      description: "Here's a beautiful coloring page to get you started!",
       className: "bg-yellow-100 border-yellow-300 text-yellow-900"
     });
-    onColorImage("https://placehold.co/512x512/png?text=Let%27s+Color!");
+    onColorImage(randomImage);
   }
 
   function handleValidateApiKey() {
