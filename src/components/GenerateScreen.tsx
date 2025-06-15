@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -22,11 +21,18 @@ const STYLES = [
   { key: "manga", label: "Manga" },
 ];
 
-// Preset images from uploads to use when skipping
+// Updated preset images from the new uploads
 const PRESET_IMAGES = [
-  "/lovable-uploads/0f9defed-ff18-4dd5-866b-3ff6c5fa3b5b.png",
-  "/lovable-uploads/84079a02-d4a9-4396-84ac-0bc0297ce8cb.png",
-  "/lovable-uploads/afe66581-25b7-4114-9306-f9b7be26e040.png"
+  "/lovable-uploads/17c5a5b4-acf6-48aa-8a0b-c47c7bd553ab.png",
+  "/lovable-uploads/db3515c3-7ac0-4340-bec8-7fee77576f37.png",
+  "/lovable-uploads/dc030de0-0e63-46b3-b45f-9ac0247657c2.png",
+  "/lovable-uploads/8eff0c06-2eee-467c-b0f5-82367d9d2347.png",
+  "/lovable-uploads/cead8119-124d-4658-a353-bcd6141cca32.png",
+  "/lovable-uploads/1167739c-c152-4105-a557-217d3fd74080.png",
+  "/lovable-uploads/b0dd923e-fc81-4766-84de-cb362b862ef4.png",
+  "/lovable-uploads/2ef77181-4213-4752-9572-da21ca1b2651.png",
+  "/lovable-uploads/b57ae84e-efc6-4f7e-ad40-299c478b420d.png",
+  "/lovable-uploads/18104844-4828-4fde-98b3-6a9ce5c3de2d.png"
 ];
 
 // Simulate API key validation: just check length >= 10
@@ -94,7 +100,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   }
 
   function handleSkip() {
-    // Select a random preset image from the uploads
+    // Select a random preset image from the new uploads
     const randomImage = PRESET_IMAGES[Math.floor(Math.random() * PRESET_IMAGES.length)];
     toast({
       title: "Skipped image generation!",
