@@ -1,6 +1,9 @@
 import React from "react";
 import { FloatingDecor } from "./FloatingDecor";
 import { OutlinedText } from "./OutlinedText";
+import { AboutModal } from "./AboutModal";
+import { AnimatedMascot } from "./AnimatedMascot";
+import { Info } from "lucide-react";
 
 // Cartoon palette from the reference
 const skyBlue = "#67B6B2";
@@ -212,7 +215,7 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
     <div
       className="min-h-screen flex flex-col items-center justify-center px-2 py-8 relative overflow-x-hidden"
       style={{
-        background: `linear-gradient(180deg, ${skyBlue} 75%, ${grassGreen} 100%)`,
+        background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
       }}
     >
       {/* Floating Deco Layer */}
@@ -230,6 +233,21 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
             <FloatingDecor shape={d.shape as any} color={d.color} size={d.size} />
           </span>
         ))}
+      </div>
+
+      {/* Top-right About button */}
+      <div className="absolute top-3 right-4 z-50">
+        <AboutModal 
+          trigger={
+            <button
+              className="flex items-center gap-1 px-3 py-1 bg-black/10 hover:bg-black/20 rounded-full border border-black/12 font-semibold text-[15px] text-black shadow transition-all"
+              aria-label="About & How it Works"
+              style={{ backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)" }}
+            >
+              <Info className="w-5 h-5" /> About
+            </button>
+          }
+        />
       </div>
 
       {/* Main Content - Big cartoon-outlined title */}
@@ -287,11 +305,11 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         <div
           className="mt-4 text-center"
           style={{
-            background: creamyYellow,
+            background: "#FFE9B3",
             borderRadius: "1.3em",
             display: "inline-block",
             padding: "5px 23px 3px",
-            border: `2.5px solid ${outline}`,
+            border: `2.5px solid #2A2320`,
             boxShadow: "0 2px 8px rgba(220,150,41,0.13)",
             top: "-11px",
             zIndex: 2,
@@ -345,6 +363,9 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         </div>
       </div>
 
+      {/* Animated Mascot on corner */}
+      <AnimatedMascot />
+
       {/* Start Button */}
       <button
         onClick={onStartNow}
@@ -385,3 +406,5 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
     </div>
   );
 };
+
+// NOTE: This file is now quite long (~400 lines) — consider asking me to refactor and split it into smaller pieces for easier maintenance!

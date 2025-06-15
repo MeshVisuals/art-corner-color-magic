@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -15,13 +14,15 @@ import {
   Upload
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { Tooltip } from "@/components/ui/tooltip";
 
 interface PaintScreenProps {
   imageUrl: string;
   onBack: () => void;
+  onStartOver: () => void;
 }
 
-export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
+export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [tool, setTool] = useState<'brush' | 'eraser'>('brush');
@@ -172,6 +173,7 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
               size="sm"
               onClick={onBack}
               className="rounded-full p-2"
+              title="Back to generate"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -179,49 +181,66 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
               Paint Your Art
             </h1>
           </div>
-          
-          <Button
-            onClick={downloadImage}
-            className="rounded-xl bg-primary hover:bg-primary/90"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Download
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={downloadImage}
+              className="rounded-xl bg-primary hover:bg-primary/90"
+              title="Download your painted masterpiece"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </Button>
+            <Button
+              variant="outline"
+              onClick={onStartOver}
+              className="rounded-xl"
+              title="Start over with a new drawing"
+            >
+              <span className="font-bold">Start Over</span>
+            </Button>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Tools Panel */}
           <Card className="cozy-card p-4 lg:col-span-1">
             <div className="space-y-6">
+
               {/* Tool Selection */}
               <div>
                 <Label className="text-sm font-medium mb-3 block">Tools</Label>
                 <div className="flex gap-2">
-                  <Button
-                    variant={tool === 'brush' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setTool('brush')}
-                    className="flex-1 rounded-xl"
-                  >
-                    <Brush className="w-4 h-4 mr-1" />
-                    Brush
-                  </Button>
-                  <Button
-                    variant={tool === 'eraser' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setTool('eraser')}
-                    className="flex-1 rounded-xl"
-                  >
-                    <Eraser className="w-4 h-4 mr-1" />
-                    Eraser
-                  </Button>
+                  <Tooltip content="Brush: draw/color!" side="bottom"><span>
+                    <Button
+                      variant={tool === 'brush' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setTool('brush')}
+                      className="flex-1 rounded-xl"
+                    >
+                      <Brush className="w-4 h-4 mr-1" />
+                      Brush
+                    </Button>
+                  </span></Tooltip>
+                  <Tooltip content="Eraser: fix mistakes" side="bottom"><span>
+                    <Button
+                      variant={tool === 'eraser' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setTool('eraser')}
+                      className="flex-1 rounded-xl"
+                    >
+                      <Eraser className="w-4 h-4 mr-1" />
+                      Eraser
+                    </Button>
+                  </span></Tooltip>
                 </div>
               </div>
 
               {/* Brush Size */}
               <div>
                 <Label className="text-sm font-medium mb-3 block">
-                  Size: {brushSize}px
+                  <Tooltip content="Choose brush/eraser size" side="top">
+                    <span>Size: {brushSize}px</span>
+                  </Tooltip>
                 </Label>
                 <Slider
                   value={[brushSize]}
@@ -236,7 +255,9 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
               {tool === 'brush' && (
                 <div>
                   <Label className="text-sm font-medium mb-3 block">
-                    Opacity: {brushOpacity}%
+                    <Tooltip content="Make brush paint more or less see-through" side="top">
+                      <span>Opacity: {brushOpacity}%</span>
+                    </Tooltip>
                   </Label>
                   <Slider
                     value={[brushOpacity]}
@@ -252,6 +273,7 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
               {tool === 'brush' && (
                 <div>
                   <Label className="text-sm font-medium mb-3 block">Colors</Label>
+                  <Tooltip content="Pick a color!" side="top">
                   <div className="grid grid-cols-5 gap-2">
                     {colors.map((color) => (
                       <button
@@ -263,9 +285,12 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
                             : 'border-border hover:scale-105'
                         }`}
                         style={{ backgroundColor: color }}
+                        title={color}
+                        aria-label={`Use color ${color}`}
                       />
                     ))}
                   </div>
+                  </Tooltip>
                 </div>
               )}
 
@@ -273,24 +298,28 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
               <div>
                 <Label className="text-sm font-medium mb-3 block">History</Label>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={undo}
-                    disabled={historyIndex <= 0}
-                    className="flex-1 rounded-xl"
-                  >
-                    <Undo2 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={redo}
-                    disabled={historyIndex >= history.length - 1}
-                    className="flex-1 rounded-xl"
-                  >
-                    <Redo2 className="w-4 h-4" />
-                  </Button>
+                  <Tooltip content="Undo last stroke" side="bottom"><span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={undo}
+                      disabled={historyIndex <= 0}
+                      className="flex-1 rounded-xl"
+                    >
+                      <Undo2 className="w-4 h-4" />
+                    </Button>
+                  </span></Tooltip>
+                  <Tooltip content="Redo" side="bottom"><span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={redo}
+                      disabled={historyIndex >= history.length - 1}
+                      className="flex-1 rounded-xl"
+                    >
+                      <Redo2 className="w-4 h-4" />
+                    </Button>
+                  </span></Tooltip>
                 </div>
               </div>
             </div>
@@ -317,3 +346,5 @@ export const PaintScreen = ({ imageUrl, onBack }: PaintScreenProps) => {
     </div>
   );
 };
+
+// NOTE: This file is now 320+ lines long. Consider asking to refactor it into smaller logical pieces for maintainability!
