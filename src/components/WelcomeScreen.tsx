@@ -1,6 +1,5 @@
 import React from "react";
 import { FloatingDecor } from "./FloatingDecor";
-import { OutlinedText } from "./OutlinedText";
 import { AboutModal } from "./AboutModal";
 import { AnimatedMascot } from "./AnimatedMascot";
 import { Info } from "lucide-react";
@@ -250,95 +249,8 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         />
       </div>
 
-      {/* Main Content - Big cartoon-outlined title */}
-      <div className="w-full max-w-xl mx-auto flex flex-col items-center relative z-30" style={{ marginBottom: "-2.0rem" }}>
-        {/* App Title */}
-        <div
-          className="text-center select-none"
-          style={{
-            marginBottom: "-0.2em",
-            position: "relative",
-            zIndex: 2,
-            userSelect: "none",
-            pointerEvents: "none"
-          }}
-        >
-          <OutlinedText
-            text="VANESSA'S"
-            fontSize="2.35rem"
-            color="#EF7B24"
-            outlineColor="#181211"
-            outlineWidth={6}
-            fontFamily="'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive"
-            shadowColor="#EF7B24"
-            shadowOffset={3}
-            letterSpacing="0.12em"
-            skew={-10}
-            rotate={-3.7}
-            style={{
-              display: "block",
-              marginBottom: "-0.42em"
-            }}
-          />
-          <OutlinedText
-            text="LITTLE ART CORNER"
-            fontSize="2.12rem"
-            color="#FFE9B3"
-            outlineColor="#181211"
-            outlineWidth={6}
-            fontFamily="'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive"
-            shadowColor="#EF7B24"
-            shadowOffset={3}
-            letterSpacing="0.08em"
-            skew={-7}
-            rotate={-2.5}
-            style={{
-              display: "block",
-              padding: "0.02em 0 0 0",
-              borderRadius: "0.16em",
-              marginTop: "-0.12em"
-            }}
-          />
-        </div>
-
-        {/* “Comfy and Cozy” Subheadline, also cartoon-outlined */}
-        <div
-          className="mt-4 text-center"
-          style={{
-            background: "#FFE9B3",
-            borderRadius: "1.3em",
-            display: "inline-block",
-            padding: "5px 23px 3px",
-            border: `2.5px solid #2A2320`,
-            boxShadow: "0 2px 8px rgba(220,150,41,0.13)",
-            top: "-11px",
-            zIndex: 2,
-            fontWeight: 800,
-            fontSize: "1.08em",
-            pointerEvents: "none",
-            marginBottom: "-10px",
-            position: "relative"
-          }}
-        >
-          <OutlinedText
-            text="Comfy and Cozy"
-            fontSize="1.5rem"
-            color="#F7BB48"
-            outlineColor="#181211"
-            outlineWidth={4}
-            fontFamily="'Fredoka', 'Baloo 2', 'sniglet', 'Nunito', cursive"
-            shadowColor="#F7BB48"
-            shadowOffset={2}
-            letterSpacing="0.10em"
-            skew={-2}
-            rotate={-1.5}
-            style={{}}
-          />
-        </div>
-      </div>
-
-      {/* Center Image in cartoon-style white round frame */}
-      <div className="mt-2 mb-7 w-full flex justify-center z-10 relative" style={{ zIndex: 22 }}>
+      {/* Centerpiece Cover Image in cartoon-style white round frame */}
+      <div className="mt-12 mb-7 w-full flex justify-center z-10 relative" style={{ zIndex: 22 }}>
         <div
           className="bg-white flex items-center justify-center rounded-3xl balloon-frame border-white"
           style={{
