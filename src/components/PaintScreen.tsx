@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { PaintHeader } from "./PaintHeader";
 import { PaintToolbar } from "./PaintToolbar";
 import { PaintCanvas } from "./PaintCanvas";
 import { usePaintHistory } from "@/hooks/usePaintHistory";
+import { useLayers } from "@/hooks/useLayers";
 import { usePaintCanvas } from "@/hooks/usePaintCanvas";
 import { FloatingDecor } from "./FloatingDecor";
 
@@ -80,14 +80,39 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
 
   const { saveToHistory, undo, redo, canUndo, canRedo } = usePaintHistory();
   
+  const {
+    layers,
+    activeLayerId,
+    initializeLayers,
+    addLayer,
+    deleteLayer,
+    duplicateLayer,
+    toggleLayerVisibility,
+    setActiveLayerId,
+    moveLayer,
+    renameLayer,
+    changeLayerOpacity,
+    rasterizeAll,
+    rasterizeVisible,
+    flattenImage,
+    getActiveLayer
+  } = useLayers(imageUrl);
+  
   const { canvasRef, startDrawing, draw, stopDrawing } = usePaintCanvas({
     imageUrl,
     tool,
     brushSize,
     brushOpacity,
     currentColor,
-    onSaveToHistory: saveToHistory
+    onSaveToHistory: saveToHistory,
+    activeLayer: getActiveLayer(),
+    layers
   });
+
+  // Initialize layers when component mounts
+  useEffect(() => {
+    initializeLayers();
+  }, [initializeLayers]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -171,6 +196,19 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
             onRedo={handleRedo}
             canUndo={canUndo}
             canRedo={canRedo}
+            layers={layers}
+            activeLayerId={activeLayerId}
+            onAddLayer={addLayer}
+            onDeleteLayer={deleteLayer}
+            onDuplicateLayer={duplicateLayer}
+            onToggleLayerVisibility={toggleLayerVisibility}
+            onSelectLayer={setActiveLayerId}
+            onMoveLayer={moveLayer}
+            onRenameLayer={renameLayer}
+            onChangeLayerOpacity={changeLayerOpacity}
+            onRasterizeAll={rasterizeAll}
+            onRasterizeVisible={rasterizeVisible}
+            onFlattenImage={flattenImage}
           />
 
           <PaintCanvas

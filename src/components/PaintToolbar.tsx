@@ -1,8 +1,11 @@
+
 import { ToolSelector } from "./ToolSelector";
 import { BrushSizeSlider } from "./BrushSizeSlider";
 import { BrushOpacitySlider } from "./BrushOpacitySlider";
 import { ColorPalette } from "./ColorPalette";
 import { HistoryControls } from "./HistoryControls";
+import { LayersPanel, Layer } from "./LayersPanel";
+import { RasterizeControls } from "./RasterizeControls";
 import { QuickTips } from "./QuickTips";
 
 interface PaintToolbarProps {
@@ -18,6 +21,20 @@ interface PaintToolbarProps {
   onRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  // Layer props
+  layers: Layer[];
+  activeLayerId: string;
+  onAddLayer: () => void;
+  onDeleteLayer: (layerId: string) => void;
+  onDuplicateLayer: (layerId: string) => void;
+  onToggleLayerVisibility: (layerId: string) => void;
+  onSelectLayer: (layerId: string) => void;
+  onMoveLayer: (layerId: string, direction: 'up' | 'down') => void;
+  onRenameLayer: (layerId: string, newName: string) => void;
+  onChangeLayerOpacity: (layerId: string, opacity: number) => void;
+  onRasterizeAll: () => void;
+  onRasterizeVisible: () => void;
+  onFlattenImage: () => void;
 }
 
 const colors = [
@@ -38,7 +55,20 @@ export const PaintToolbar = ({
   onUndo,
   onRedo,
   canUndo,
-  canRedo
+  canRedo,
+  layers,
+  activeLayerId,
+  onAddLayer,
+  onDeleteLayer,
+  onDuplicateLayer,
+  onToggleLayerVisibility,
+  onSelectLayer,
+  onMoveLayer,
+  onRenameLayer,
+  onChangeLayerOpacity,
+  onRasterizeAll,
+  onRasterizeVisible,
+  onFlattenImage
 }: PaintToolbarProps) => {
   return (
     <div className="cozy-card p-4 lg:col-span-1" data-testid="paint-toolbar">
@@ -55,6 +85,23 @@ export const PaintToolbar = ({
             colors={colors}
           />
         )}
+        <LayersPanel
+          layers={layers}
+          activeLayerId={activeLayerId}
+          onAddLayer={onAddLayer}
+          onDeleteLayer={onDeleteLayer}
+          onDuplicateLayer={onDuplicateLayer}
+          onToggleLayerVisibility={onToggleLayerVisibility}
+          onSelectLayer={onSelectLayer}
+          onMoveLayer={onMoveLayer}
+          onRenameLayer={onRenameLayer}
+          onChangeLayerOpacity={onChangeLayerOpacity}
+        />
+        <RasterizeControls
+          onRasterizeAll={onRasterizeAll}
+          onRasterizeVisible={onRasterizeVisible}
+          onFlattenImage={onFlattenImage}
+        />
         <HistoryControls
           onUndo={onUndo}
           onRedo={onRedo}
@@ -66,14 +113,3 @@ export const PaintToolbar = ({
     </div>
   );
 };
-
-// Test ID reference documentation (for testing!):
-// - data-testid="paint-toolbar": overall toolbar container
-// - data-testid="tool-brush": brush select button
-// - data-testid="tool-eraser": eraser select button
-// - data-testid="slider-size": size slider
-// - data-testid="slider-opacity": opacity slider
-// - data-testid={`color-swatch-${color}`}: each preset color swatch (e.g., color-swatch-#FF6B6B')
-// - data-testid="color-picker": the custom color picker trigger/button
-// - data-testid="undo-btn": undo button
-// - data-testid="redo-btn": redo button

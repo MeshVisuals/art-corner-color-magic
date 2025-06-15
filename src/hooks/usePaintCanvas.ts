@@ -1,5 +1,6 @@
 
 import { useRef, useEffect, useState } from 'react';
+import { Layer } from '@/components/LayersPanel';
 
 interface UsePaintCanvasProps {
   imageUrl: string;
@@ -8,6 +9,8 @@ interface UsePaintCanvasProps {
   brushOpacity: number;
   currentColor: string;
   onSaveToHistory: (canvas: HTMLCanvasElement) => void;
+  activeLayer?: Layer;
+  layers: Layer[];
 }
 
 export const usePaintCanvas = ({
@@ -16,49 +19,52 @@ export const usePaintCanvas = ({
   brushSize,
   brushOpacity,
   currentColor,
-  onSaveToHistory
+  onSaveToHistory,
+  activeLayer,
+  layers
 }: UsePaintCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  useEffect(() => {
+  // Composite all layers onto the main canvas
+  const compositeLayersOnCanvas = () => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || layers.length === 0) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      onSaveToHistory(canvas);
-    };
-    img.src = imageUrl;
-  }, [imageUrl, onSaveToHistory]);
+    // Clear the main canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey) {
-        switch (e.key) {
-          case 'z':
-            e.preventDefault();
-            // Undo functionality would be handled by parent component
-            break;
-          case 'y':
-            e.preventDefault();
-            // Redo functionality would be handled by parent component
-            break;
-        }
+    // Draw all visible layers in order
+    layers.forEach(layer => {
+      if (layer.visible) {
+        ctx.globalAlpha = layer.opacity / 100;
+        ctx.drawImage(layer.canvas, 0, 0);
       }
-    };
+    });
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    ctx.globalAlpha = 1;
+  };
+
+  // Update canvas when layers change
+  useEffect(() => {
+    compositeLayersOnCanvas();
+  }, [layers]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || layers.length === 0) return;
+
+    // Set canvas dimensions based on the first layer
+    const firstLayer = layers[0];
+    if (firstLayer && firstLayer.canvas) {
+      canvas.width = firstLayer.canvas.width;
+      canvas.height = firstLayer.canvas.height;
+      compositeLayersOnCanvas();
+    }
+  }, [imageUrl, layers]);
 
   const getPointerPosition = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -85,17 +91,16 @@ export const usePaintCanvas = ({
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
+    if (!activeLayer) return;
+    
     setIsDrawing(true);
     draw(e);
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
+    if (!isDrawing || !activeLayer) return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
+    const ctx = activeLayer.canvas.getContext('2d');
     if (!ctx) return;
 
     const { x, y } = getPointerPosition(e);
@@ -106,7 +111,7 @@ export const usePaintCanvas = ({
 
     if (tool === 'brush') {
       ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = brushOpacity / 100;
+      ctx.globalAlpha = (brushOpacity / 100) * (activeLayer.opacity / 100);
       ctx.strokeStyle = currentColor;
     } else {
       ctx.globalCompositeOperation = 'destination-out';
@@ -117,16 +122,19 @@ export const usePaintCanvas = ({
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(x, y);
+
+    // Update the main canvas
+    compositeLayersOnCanvas();
   };
 
   const stopDrawing = () => {
-    if (isDrawing) {
+    if (isDrawing && activeLayer) {
       setIsDrawing(false);
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.beginPath();
+      const ctx = activeLayer.canvas.getContext('2d');
+      if (ctx) {
+        ctx.beginPath();
+        const canvas = canvasRef.current;
+        if (canvas) {
           onSaveToHistory(canvas);
         }
       }
