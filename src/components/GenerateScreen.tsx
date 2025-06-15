@@ -94,7 +94,9 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center py-10 px-3">
-      <div className="w-full max-w-xl p-7 flex flex-col gap-5 items-center relative balloon-frame">
+      <div className="w-full max-w-xl p-7 flex flex-col gap-5 items-center relative">
+        {/* Removed balloon-frame class above */}
+
         <button
           className="absolute left-5 top-5 text-black/50 hover:text-black text-lg"
           onClick={onBack}
@@ -207,12 +209,31 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
         {/* Generate or Continue button */}
         <div className="w-full mt-2 flex flex-col items-center gap-2">
           {displayImageUrl ? (
-            <Button onClick={handleContinue} size="lg" className="font-bold w-full max-w-xs cartoon-text" variant="cartoon">
+            <Button
+              onClick={handleContinue}
+              size="lg"
+              className="font-bold w-full max-w-xs"
+              variant="cartoon"
+            >
               Color This!
             </Button>
           ) : (
-            <Button onClick={handleGenerate} disabled={loading} size="lg" className="w-full max-w-xs font-bold cartoon-text" variant="cartoon">
-              {loading ? (<><Loader2 className="animate-spin" /> Generating...</>) : (<><ImagePlus /> Generate</>)}
+            <Button
+              onClick={handleGenerate}
+              disabled={loading}
+              size="lg"
+              className="w-full max-w-xs font-bold"
+              variant="cartoon"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin" /> Generating...
+                </>
+              ) : (
+                <>
+                  <ImagePlus /> Generate
+                </>
+              )}
             </Button>
           )}
         </div>
