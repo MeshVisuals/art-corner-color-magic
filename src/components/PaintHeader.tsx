@@ -29,10 +29,10 @@ export const PaintHeader = ({ onBack, onStartOver, canvasRef }: PaintHeaderProps
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-4">
         <Button
-          variant="ghost"
-          size="sm"
+          variant="cartoonOutline"
+          size="cartoon"
           onClick={onBack}
-          className="rounded-full p-2"
+          className="rounded-full p-3"
           title="Back to generate"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -41,22 +41,31 @@ export const PaintHeader = ({ onBack, onStartOver, canvasRef }: PaintHeaderProps
           Paint Your Art
         </h1>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <Button
+          variant="cartoon"
+          size="cartoon"
           onClick={downloadImage}
-          className="rounded-xl bg-primary hover:bg-primary/90"
           title="Download your painted masterpiece"
+          style={{
+            letterSpacing: "0.04em",
+            boxShadow: "0 2px 18px rgba(79,160,120,0.16)",
+          }}
         >
           <Download className="w-4 h-4 mr-2" />
-          Download
+          DOWNLOAD
         </Button>
         <Button
-          variant="outline"
+          variant="cartoonOutline"
+          size="cartoon"
           onClick={onStartOver}
-          className="rounded-xl"
           title="Start over with a new drawing"
+          style={{
+            letterSpacing: "0.04em",
+            boxShadow: "0 2px 18px rgba(0,0,0,0.1)",
+          }}
         >
-          <span className="font-bold">Start Over</span>
+          START OVER
         </Button>
       </div>
     </div>
