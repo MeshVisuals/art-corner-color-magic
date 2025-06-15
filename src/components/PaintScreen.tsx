@@ -14,7 +14,7 @@ import {
   Upload
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Tooltip } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface PaintScreenProps {
   imageUrl: string;
