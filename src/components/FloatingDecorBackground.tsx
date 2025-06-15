@@ -25,7 +25,6 @@ export const FloatingDecorBackground: React.FC = () => (
         }}
       >
         <FloatingDecor
-          //@ts-expect-error: design uses fixed strings
           shape={cfg.shape}
           color={cfg.color}
           size={cfg.size}
