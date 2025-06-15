@@ -254,21 +254,21 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         <div
           className="bg-white flex items-center justify-center rounded-3xl balloon-frame border-white"
           style={{
-            width: 292,
-            height: 292,
+            width: 400,                   // increased from 292
+            height: 400,                  // increased from 292
             overflow: "hidden",
             boxSizing: "border-box",
             position: "relative",
             zIndex: 1,
-            borderWidth: "7px",
+            borderWidth: "8px",           // slightly thicker for larger size
           }}
         >
           <img
             src="/lovable-uploads/84079a02-d4a9-4396-84ac-0bc0297ce8cb.png"
             alt="Vanessa and child cartoon in the park"
-            className="object-cover w-full h-full"
+            className="object-contain w-full h-full"
             style={{
-              borderRadius: "1.7rem",
+              borderRadius: "2rem",
               objectFit: "contain"
             }}
           />
