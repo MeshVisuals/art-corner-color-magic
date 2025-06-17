@@ -249,31 +249,6 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         />
       </div>
 
-      {/* Centerpiece Cover Image in cartoon-style white round frame */}
-      <div className="mt-12 mb-7 w-full flex justify-center z-10 relative" style={{ zIndex: 22 }}>
-        <div
-          className="bg-white flex items-center justify-center rounded-3xl balloon-frame border-white"
-          style={{
-            width: 400,
-            height: 400,
-            overflow: "hidden",
-            boxSizing: "border-box",
-            position: "relative",
-            zIndex: 1,
-            borderWidth: "8px",
-          }}
-        >
-          <img
-            src="/lovable-uploads/0f9defed-ff18-4dd5-866b-3ff6c5fa3b5b.png"
-            alt="Vanessa's Little Art Corner: The Comfy and Cozy Series"
-            className="object-contain w-full h-full"
-            style={{
-              borderRadius: "2rem",
-              objectFit: "contain"
-            }}
-          />
-        </div>
-      </div>
 
       {/* Animated Mascot on corner */}
       <AnimatedMascot />
