@@ -3,6 +3,7 @@ import { useState } from "react";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { GenerateScreen } from "@/components/GenerateScreen";
 import { PaintScreen } from "@/components/PaintScreen";
+import { Settings } from "./Settings";
 
 /**
  * Animated page wrapper for fade transitions between screens.
@@ -16,7 +17,7 @@ const AnimatedScreen = ({ children, show }: { children: React.ReactNode, show: b
   </div>
 );
 
-type Screen = 'welcome' | 'generate' | 'paint';
+type Screen = 'welcome' | 'generate' | 'paint' | 'settings';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
@@ -30,6 +31,7 @@ const Index = () => {
   }
 
   const navigateToGenerate = () => setScreenWithFade('generate');
+  const navigateToSettings = () => setScreenWithFade('settings');
   const navigateToPaint = (imageUrl: string) => {
     setCurrentImageUrl(imageUrl);
     setScreenWithFade('paint');
@@ -38,6 +40,8 @@ const Index = () => {
     if (currentScreen === 'paint') {
       setScreenWithFade('generate');
     } else if (currentScreen === 'generate') {
+      setScreenWithFade('welcome');
+    } else if (currentScreen === 'settings') {
       setScreenWithFade('welcome');
     }
   };
@@ -55,12 +59,13 @@ const Index = () => {
     >
       {/* Absolute containers for overlapping fade screens */}
       <AnimatedScreen show={currentScreen === 'welcome'}>
-        <WelcomeScreen onStartNow={navigateToGenerate} />
+        <WelcomeScreen onStartNow={navigateToGenerate} onSettings={navigateToSettings} />
       </AnimatedScreen>
       <AnimatedScreen show={currentScreen === 'generate'}>
         <GenerateScreen 
           onBack={navigateBack}
           onColorImage={navigateToPaint}
+          onSettings={navigateToSettings}
         />
       </AnimatedScreen>
       <AnimatedScreen show={currentScreen === 'paint' && !!currentImageUrl}>
@@ -69,6 +74,9 @@ const Index = () => {
           onBack={navigateBack}
           onStartOver={startOver}
         />
+      </AnimatedScreen>
+      <AnimatedScreen show={currentScreen === 'settings'}>
+        <Settings onBack={navigateBack} />
       </AnimatedScreen>
     </div>
   );

@@ -42,27 +42,24 @@ export const PaintCanvas = ({
   };
 
   return (
-    <div className="lg:col-span-3">
-      <div className="cozy-card p-6">
-        <div className="w-full overflow-auto">
-          <canvas
-            ref={canvasRef}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseLeave}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            className="max-w-full h-auto rounded-2xl cursor-crosshair touch-none"
-            style={{ 
-              maxHeight: '70vh',
-              border: '4px solid #2A2320',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
-            }}
-          />
-        </div>
-      </div>
+    <div className="w-full h-full flex items-center justify-center">
+      <canvas
+        ref={canvasRef}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className="max-w-full h-auto rounded-2xl cursor-crosshair touch-none"
+        style={{ 
+          maxHeight: '90vh',
+          maxWidth: '90%',
+          border: '4px solid #2A2320',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
+        }}
+      />
     </div>
   );
 };

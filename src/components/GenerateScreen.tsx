@@ -1,18 +1,18 @@
-import React, { useState, useRef } from "react";
-import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ApiKeyInput } from "./ApiKeyInput";
+import { toast } from "@/hooks/use-toast";
+import { ArrowLeft, Settings } from "lucide-react";
+import React, { useRef, useState, useEffect } from "react";
 import { FloatingDecorBackground } from "./FloatingDecorBackground";
+import { GenerateOrContinueButton } from "./GenerateOrContinueButton";
 import { ImageDisplay } from "./ImageDisplay";
 import { PromptInput } from "./PromptInput";
 import { StyleSelector } from "./StyleSelector";
 import { UploadAndSkipButtons } from "./UploadAndSkipButtons";
-import { GenerateOrContinueButton } from "./GenerateOrContinueButton";
-import { ArrowLeft } from "lucide-react";
 
 interface GenerateScreenProps {
   onBack: () => void;
   onColorImage: (imageUrl: string) => void;
+  onSettings?: () => void;
 }
 
 const STYLES = [
@@ -22,37 +22,51 @@ const STYLES = [
   { key: "manga", label: "Manga" },
 ];
 
-// Updated preset images from the new uploads
+// All coloring page images from lovable-uploads folder (excluding Vanessa.png)
 const PRESET_IMAGES = [
-  "/lovable-uploads/17c5a5b4-acf6-48aa-8a0b-c47c7bd553ab.png",
-  "/lovable-uploads/db3515c3-7ac0-4340-bec8-7fee77576f37.png",
-  "/lovable-uploads/dc030de0-0e63-46b3-b45f-9ac0247657c2.png",
-  "/lovable-uploads/8eff0c06-2eee-467c-b0f5-82367d9d2347.png",
-  "/lovable-uploads/cead8119-124d-4658-a353-bcd6141cca32.png",
+  "/lovable-uploads/0.png",
+  "/lovable-uploads/0f9defed-ff18-4dd5-866b-3ff6c5fa3b5b.png",
   "/lovable-uploads/1167739c-c152-4105-a557-217d3fd74080.png",
-  "/lovable-uploads/b0dd923e-fc81-4766-84de-cb362b862ef4.png",
+  "/lovable-uploads/17c5a5b4-acf6-48aa-8a0b-c47c7bd553ab.png",
+  "/lovable-uploads/18104844-4828-4fde-98b3-6a9ce5c3de2d.png",
   "/lovable-uploads/2ef77181-4213-4752-9572-da21ca1b2651.png",
+  "/lovable-uploads/84079a02-d4a9-4396-84ac-0bc0297ce8cb.png",
+  "/lovable-uploads/8eff0c06-2eee-467c-b0f5-82367d9d2347.png",
+  "/lovable-uploads/afe66581-25b7-4114-9306-f9b7be26e040.png",
+  "/lovable-uploads/b0dd923e-fc81-4766-84de-cb362b862ef4.png",
   "/lovable-uploads/b57ae84e-efc6-4f7e-ad40-299c478b420d.png",
-  "/lovable-uploads/18104844-4828-4fde-98b3-6a9ce5c3de2d.png"
+  "/lovable-uploads/cead8119-124d-4658-a353-bcd6141cca32.png",
+  "/lovable-uploads/db3515c3-7ac0-4340-bec8-7fee77576f37.png",
+  "/lovable-uploads/dc030de0-0e63-46b3-b45f-9ac0247657c2.png"
 ];
 
-// Simulate API key validation: just check length >= 10
+// Validate Hugging Face API key format
 function validateApiKey(key: string) {
-  return key.trim().length >= 10;
+  return key.trim().startsWith('hf_') && key.trim().length >= 20;
 }
 
 export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   onBack,
   onColorImage,
+  onSettings,
 }) => {
   const [apiKey, setApiKey] = useState("");
-  const [apiKeyStatus, setApiKeyStatus] = useState<"untouched" | "loading" | "valid" | "invalid">("untouched");
+  const [hasApiKey, setHasApiKey] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [selectedStyle, setSelectedStyle] = useState<string>("bobby_goods");
   const [loading, setLoading] = useState(false);
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Check for saved API key on component mount
+  useEffect(() => {
+    const savedKey = localStorage.getItem('hf_api_key');
+    if (savedKey && validateApiKey(savedKey)) {
+      setApiKey(savedKey);
+      setHasApiKey(true);
+    }
+  }, []);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -77,15 +91,69 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       });
       return;
     }
+
+    if (!hasApiKey) {
+      toast({
+        title: "API Key Required!",
+        description: "Please configure your Hugging Face API key in Settings first.",
+        className: "bg-yellow-100 border-yellow-200 text-yellow-800"
+      });
+      return;
+    }
+
     setLoading(true);
     setGeneratedUrl(null);
     setUploadedUrl(null);
-    setTimeout(() => {
-      const img = "https://placehold.co/512x512/png?text=" +
-        encodeURIComponent(`${prompt} (${STYLES.find(s => s.key === selectedStyle)?.label})`);
-      setGeneratedUrl(img);
+
+    try {
+      // Create enhanced prompt with style
+      const stylePrompt = STYLES.find(s => s.key === selectedStyle)?.label || "cartoon style";
+      const enhancedPrompt = `${prompt}, ${stylePrompt} coloring book page, black and white line art, simple outlines, no shading`;
+
+      const response = await fetch(
+        "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            inputs: enhancedPrompt,
+            parameters: {
+              guidance_scale: 7.5,
+              num_inference_steps: 20,
+              width: 512,
+              height: 512
+            }
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      setGeneratedUrl(imageUrl);
+
+      toast({
+        title: "Image generated!",
+        description: "Your coloring page is ready!",
+        className: "bg-green-100 border-green-200 text-green-800"
+      });
+
+    } catch (error) {
+      console.error("Generation error:", error);
+      toast({
+        title: "Generation failed!",
+        description: "Please try again or check your API key.",
+        className: "bg-red-100 border-red-200 text-red-800"
+      });
+    } finally {
       setLoading(false);
-    }, 1800);
+    }
   }
 
   function handleContinue() {
@@ -106,28 +174,16 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
     toast({
       title: "Skipped image generation!",
       description: "Here's a beautiful coloring page to get you started!",
-      className: "bg-yellow-100 border-yellow-300 text-yellow-900"
+      className: "bg-white border-gray-300 text-gray-900"
     });
     onColorImage(randomImage);
   }
 
-  function handleValidateApiKey() {
-    setApiKeyStatus("loading");
-    setTimeout(() => {
-      if (validateApiKey(apiKey)) {
-        setApiKeyStatus("valid");
-      } else {
-        setApiKeyStatus("invalid");
-      }
-    }, 800);
+  function handleRedo() {
+    setGeneratedUrl(null);
+    setUploadedUrl(null);
   }
 
-  function handleApiKeyKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleValidateApiKey();
-    }
-  }
 
   const displayImageUrl = uploadedUrl || generatedUrl;
 
@@ -144,36 +200,76 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
         >
           <ArrowLeft className="w-4 h-4" />
         </Button>
-        <h2 className="font-balloony text-3xl md:text-4xl mb-2 text-center">Generate an Image</h2>
-        <ApiKeyInput
-          apiKey={apiKey}
-          apiKeyStatus={apiKeyStatus}
-          onApiKeyChange={value => {
-            setApiKey(value);
-            setApiKeyStatus("untouched");
-          }}
-          onValidate={handleValidateApiKey}
-          onApiKeyKeyDown={handleApiKeyKeyDown}
-        />
-        <ImageDisplay loading={loading} displayImageUrl={displayImageUrl} prompt={prompt} />
-        <UploadAndSkipButtons
-          onUploadClick={handleUploadClick}
-          fileInputRef={fileInputRef}
-          onFileChange={handleFileChange}
-          onSkip={handleSkip}
-        />
-        <PromptInput prompt={prompt} setPrompt={setPrompt} loading={loading} />
-        <StyleSelector
-          selectedStyle={selectedStyle}
-          setSelectedStyle={setSelectedStyle}
-          STYLES={STYLES}
-        />
-        <GenerateOrContinueButton
-          displayImageUrl={displayImageUrl}
-          loading={loading}
-          onGenerate={handleGenerate}
-          onContinue={handleContinue}
-        />
+        <div className="text-center mb-6">
+          {/* API Key Status - Clickable */}
+          <div className="flex items-center justify-center mb-4">
+            {hasApiKey ? (
+              <button
+                onClick={onSettings}
+                className="flex items-center gap-2 px-4 py-2 bg-green-100 border border-green-200 rounded-full hover:bg-green-200 transition-colors cursor-pointer"
+              >
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-green-700 font-medium">API Key Configured</span>
+              </button>
+            ) : (
+              <button
+                onClick={onSettings}
+                className="flex items-center gap-2 px-4 py-2 bg-yellow-100 border border-yellow-200 rounded-full hover:bg-yellow-200 transition-colors cursor-pointer"
+              >
+                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span className="text-sm text-yellow-700 font-medium">API Key Required - Click to Configure</span>
+              </button>
+            )}
+          </div>
+          
+          <h2 className="moodcake-font text-5xl font-black text-[#F7D04B] mb-2" 
+              style={{ 
+                WebkitTextStroke: "1px #2A2320", 
+                textShadow: "4px 4px 0px #2A2320, -2px -2px 0px #2A2320, 2px -2px 0px #2A2320, -2px 2px 0px #2A2320",
+                filter: "drop-shadow(3px 3px 6px rgba(0,0,0,0.3))"
+              }}>
+            Generate an Image
+          </h2>
+        </div>
+
+        {/* Three-column layout */}
+        <div className="grid grid-cols-3 gap-6 w-full max-w-7xl">
+          {/* LEFT COLUMN - Style Selector */}
+          <div className="space-y-4">
+            <StyleSelector
+              selectedStyle={selectedStyle}
+              setSelectedStyle={setSelectedStyle}
+              STYLES={STYLES}
+            />
+          </div>
+
+          {/* CENTER COLUMN - Image Display */}
+          <div className="space-y-4">
+            <ImageDisplay loading={loading} displayImageUrl={displayImageUrl} prompt={prompt} />
+          </div>
+
+          {/* RIGHT COLUMN - Upload, Skip, Generate buttons */}
+          <div className="space-y-4">
+            <UploadAndSkipButtons
+              onUploadClick={handleUploadClick}
+              fileInputRef={fileInputRef}
+              onFileChange={handleFileChange}
+              onSkip={handleSkip}
+            />
+            <GenerateOrContinueButton
+              displayImageUrl={displayImageUrl}
+              loading={loading}
+              onGenerate={handleGenerate}
+              onContinue={handleContinue}
+              onRedo={handleRedo}
+            />
+          </div>
+        </div>
+
+        {/* Prompt Input at Bottom - Full Width */}
+        <div className="w-full max-w-4xl mt-6">
+          <PromptInput prompt={prompt} setPrompt={setPrompt} loading={loading} />
+        </div>
       </div>
     </div>
   );

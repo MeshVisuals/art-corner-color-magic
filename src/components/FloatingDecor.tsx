@@ -1,7 +1,6 @@
-
 import React from "react";
 
-type FloatingShape = "heart" | "star" | "sparkle";
+export type FloatingShape = "heart" | "star" | "sparkle" | "flower" | "butterfly" | "rainbow";
 
 interface FloatingDecorProps {
   shape: FloatingShape;
@@ -53,6 +52,69 @@ export const FloatingDecor = ({
           stroke="#2A2320"
           strokeWidth={2.2}
         />
+      </svg>
+    );
+  }
+  if (shape === "flower") {
+    return (
+      <svg
+        width={size}
+        height={size}
+        style={style}
+        className={className}
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        {/* Flower petals */}
+        <circle cx={16} cy={8} r={4} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        <circle cx={24} cy={16} r={4} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        <circle cx={16} cy={24} r={4} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        <circle cx={8} cy={16} r={4} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        {/* Center */}
+        <circle cx={16} cy={16} r={3} fill="#F7BB48" stroke="#2A2320" strokeWidth={1.5} />
+      </svg>
+    );
+  }
+  if (shape === "butterfly") {
+    return (
+      <svg
+        width={size}
+        height={size}
+        style={style}
+        className={className}
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        {/* Butterfly wings */}
+        <ellipse cx={10} cy={12} rx={6} ry={4} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        <ellipse cx={22} cy={12} rx={6} ry={4} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        <ellipse cx={10} cy={20} rx={5} ry={3} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        <ellipse cx={22} cy={20} rx={5} ry={3} fill={color} stroke="#2A2320" strokeWidth={1.5} />
+        {/* Body */}
+        <ellipse cx={16} cy={16} rx={1} ry={8} fill="#2A2320" />
+        {/* Antennae */}
+        <path d="M15 8c-1-2 1-4 2-3M17 8c1-2-1-4-2-3" stroke="#2A2320" strokeWidth={1.5} strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (shape === "rainbow") {
+    return (
+      <svg
+        width={size}
+        height={size}
+        style={style}
+        className={className}
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        {/* Rainbow arcs */}
+        <path d="M6 20 Q16 6 26 20" stroke="#FF6B6B" strokeWidth={2} fill="none" />
+        <path d="M8 20 Q16 8 24 20" stroke="#FFA500" strokeWidth={2} fill="none" />
+        <path d="M10 20 Q16 10 22 20" stroke="#F7BB48" strokeWidth={2} fill="none" />
+        <path d="M12 20 Q16 12 20 20" stroke="#51C7B0" strokeWidth={2} fill="none" />
+        {/* Clouds */}
+        <circle cx={6} cy={20} r={2} fill="white" stroke="#2A2320" strokeWidth={1} />
+        <circle cx={26} cy={20} r={2} fill="white" stroke="#2A2320" strokeWidth={1} />
       </svg>
     );
   }

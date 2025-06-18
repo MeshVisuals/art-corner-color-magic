@@ -31,26 +31,39 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({
   }
 
   return (
-    <div className="w-full flex flex-col gap-2 mb-1">
-      <label className="flex gap-2 items-center font-semibold text-sm text-black/70" htmlFor="api-key-input">
-        <KeyRound className="w-4 h-4" />
-        Enter your API Key
-      </label>
-      <div className="w-full relative flex items-center">
-        <Input
-          id="api-key-input"
-          placeholder="Paste or type your API key here"
-          value={apiKey}
-          type="password"
-          onChange={e => {
-            onApiKeyChange(e.target.value);
-          }}
-          className="bg-white border-gray-200 pr-11"
-          autoComplete="off"
-          spellCheck={false}
-          onKeyDown={onApiKeyKeyDown}
-          data-testid="api-key-input"
+    <form onSubmit={(e) => { e.preventDefault(); onValidate(); }}>
+      <div className="w-full flex flex-col gap-2 mb-1">
+        <label className="flex gap-2 items-center font-semibold text-sm text-black/70" htmlFor="api-key-input">
+          <KeyRound className="w-4 h-4" />
+          Enter your Hugging Face API Key
+        </label>
+        
+        {/* Hidden username field to help browser understand this is a login form */}
+        <input
+          type="text"
+          name="username"
+          value="huggingface-api"
+          autoComplete="username"
+          style={{ display: 'none' }}
+          readOnly
         />
+        
+        <div className="w-full relative flex items-center">
+          <Input
+            id="api-key-input"
+            name="password"
+            placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            value={apiKey}
+            type="password"
+            onChange={e => {
+              onApiKeyChange(e.target.value);
+            }}
+            className="bg-white border-gray-200 pr-11"
+            autoComplete="current-password"
+            spellCheck={false}
+            onKeyDown={onApiKeyKeyDown}
+            data-testid="api-key-input"
+          />
         <button
           type="button"
           onClick={apiKeyStatus === "valid" || apiKeyStatus === "invalid" ? undefined : onValidate}
@@ -80,8 +93,12 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({
         </span>
       )}
       <span className="text-xs text-muted-foreground ml-1">
-        <span className="font-medium">Tip:</span> Required for using your own AI model API.
+        <span className="font-medium">Get your free key:</span> Visit <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener" className="text-blue-600 hover:underline">huggingface.co/settings/tokens</a> • 1000 images/month free!
+      </span>
+      <span className="text-xs text-green-600 ml-1 mt-1 block">
+        💡 <span className="font-medium">Tip:</span> Your browser will ask if you want to save this API key in your password manager!
       </span>
     </div>
+    </form>
   );
 };

@@ -71,8 +71,8 @@ export const PaintToolbar = ({
   onFlattenImage
 }: PaintToolbarProps) => {
   return (
-    <div className="cozy-card p-4 lg:col-span-1" data-testid="paint-toolbar">
-      <div className="space-y-6">
+    <div className="cozy-card p-2" data-testid="paint-toolbar">
+      <div className="space-y-3">
         <ToolSelector tool={tool} setTool={setTool} />
         <BrushSizeSlider value={brushSize} onChange={setBrushSize} />
         {tool === 'brush' && (

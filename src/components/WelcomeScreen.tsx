@@ -1,15 +1,14 @@
-import React from "react";
-import { FloatingDecor } from "./FloatingDecor";
+import { Info, Settings } from "lucide-react";
 import { AboutModal } from "./AboutModal";
 import { AnimatedMascot } from "./AnimatedMascot";
-import { Info } from "lucide-react";
+import { FloatingDecor, FloatingShape } from "./FloatingDecor";
 
 // Cartoon palette from the reference
 const skyBlue = "#67B6B2";
 const grassGreen = "#F7BB48";
 const outline = "#2A2320";
 const titleOrange = "#EF7B24";
-const creamyYellow = "#FFE9B3";
+const creamyYellow = "#FFFFFF";
 const buttonTeal = "#51C7B0";
 
 // Double the floating decoration quantity and vary positions/delays for fullness
@@ -202,14 +201,94 @@ const decoConfigs = [
       animationDuration: "6.2s"
     },
     size: 15,
+  },
+  // Additional hearts as requested
+  {
+    shape: "heart",
+    color: "#EF7B24",
+    style: {
+      right: "5vw",
+      top: "35vh",
+      animationDelay: "2.7s",
+      animationDuration: "11.5s"
+    },
+    size: 26,
+  },
+  {
+    shape: "heart", 
+    color: "#F76B6B",
+    style: {
+      left: "15vw",
+      top: "45vh",
+      animationDelay: "1.9s",
+      animationDuration: "9.8s"
+    },
+    size: 22,
+  },
+  {
+    shape: "heart",
+    color: "#EF7B24", 
+    style: {
+      right: "35vw",
+      top: "12vh",
+      animationDelay: "3.4s",
+      animationDuration: "8.2s"
+    },
+    size: 19,
+  },
+  // Four flowers - two on each side with different colors
+  {
+    shape: "flower",
+    color: "#FF69B4",
+    style: {
+      left: "8vw",
+      top: "28vh",
+      animationDelay: "2.1s",
+      animationDuration: "10.3s"
+    },
+    size: 28,
+  },
+  {
+    shape: "flower",
+    color: "#FF1493",
+    style: {
+      right: "12vw",
+      top: "42vh",
+      animationDelay: "1.7s",
+      animationDuration: "9.1s"
+    },
+    size: 25,
+  },
+  {
+    shape: "flower",
+    color: "#9370DB",
+    style: {
+      left: "18vw",
+      bottom: "30vh",
+      animationDelay: "2.9s",
+      animationDuration: "11.2s"
+    },
+    size: 26,
+  },
+  {
+    shape: "flower",
+    color: "#32CD32",
+    style: {
+      right: "6vw",
+      top: "55vh",
+      animationDelay: "1.6s",
+      animationDuration: "9.4s"
+    },
+    size: 24,
   }
 ];
 
 interface WelcomeScreenProps {
   onStartNow: () => void;
+  onSettings: () => void;
 }
 
-export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
+export const WelcomeScreen = ({ onStartNow, onSettings }: WelcomeScreenProps) => {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-2 py-8 relative overflow-x-hidden"
@@ -217,8 +296,20 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
         background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
       }}
     >
+      {/* Vanessa Image Layer */}
+      <div className="absolute inset-0 w-full h-full z-10 flex items-end justify-center">
+        <img 
+          src="/lovable-uploads/Vanessa.png" 
+          alt="Vanessa"
+          className="h-auto max-h-[60vh] object-contain"
+          style={{ 
+            marginBottom: "40px" // Position so button is near bottom of image
+          }}
+        />
+      </div>
+
       {/* Floating Deco Layer */}
-      <div className="pointer-events-none absolute inset-0 w-full h-full z-20">
+      <div className="pointer-events-none absolute inset-0 w-full h-full z-50">
         {decoConfigs.map((d, i) => (
           <span
             key={i}
@@ -229,13 +320,21 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
               animationDuration: d.style?.animationDuration ?? undefined
             }}
           >
-            <FloatingDecor shape={d.shape as any} color={d.color} size={d.size} />
+            <FloatingDecor shape={d.shape as FloatingShape} color={d.color} size={d.size} />
           </span>
         ))}
       </div>
 
-      {/* Top-right About button */}
-      <div className="absolute top-3 right-4 z-50">
+      {/* Top-right buttons */}
+      <div className="absolute top-3 right-4 z-50 flex gap-2">
+        <button
+          onClick={onSettings}
+          className="flex items-center gap-1 px-3 py-1 bg-black/10 hover:bg-black/20 rounded-full border border-black/12 font-semibold text-[15px] text-black shadow transition-all"
+          aria-label="Settings"
+          style={{ backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)" }}
+        >
+          <Settings className="w-5 h-5" /> Settings
+        </button>
         <AboutModal 
           trigger={
             <button
@@ -253,15 +352,91 @@ export const WelcomeScreen = ({ onStartNow }: WelcomeScreenProps) => {
       {/* Animated Mascot on corner */}
       <AnimatedMascot />
 
+      {/* Fixed Oval Background Banner - Independent positioning */}
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        <div className="bg-white/70 backdrop-blur-sm border-4 border-white/50 shadow-xl transform -rotate-1" 
+             style={{ 
+               width: "300px",
+               height: "180px",
+               borderRadius: "50%",
+               filter: "drop-shadow(0 6px 24px rgba(0,0,0,0.1))",
+               marginTop: "-270px"
+             }}>
+        </div>
+      </div>
+
+      {/* Logo Text Components matching the design */}
+      <div className="text-center mb-8 relative z-30 mt-[-68px]">
+        {/* Vanessa's - cursive script style with burgundy color and black outline */}
+        <div className="lobster-two-font text-7xl font-bold text-[#d42c75] tracking-wide mb-[-10px]" 
+             style={{ 
+               WebkitTextStroke: "0.1px #2A2320", 
+               textShadow: "2px 2px 0px #2A2320, -1px -1px 0px #2A2320, 1px -1px 0px #2A2320, -1px 1px 0px #2A2320",
+               filter: "drop-shadow(2px 2px 4px rgba(0,0,0,0.3))"
+             }}>
+          Vanessa's
+        </div>
+        
+        {/* LITTLE ART CORNER - chunky bubble letters with yellow fill and curved arc */}
+        <div className="text-center mb-4 relative">
+          <div className="curved-text-container" style={{ height: '100px', position: 'relative' }}>
+            <svg width="500" height="100" viewBox="0 0 500 100" className="mx-auto">
+              <defs>
+                <path id="top-curve" d="M 100 65 Q 250 35 400 65" />
+                <path id="bottom-curve" d="M 150 95 Q 250 85 350 95" />
+              </defs>
+              
+              {/* LITTLE ART on top curve */}
+              <text className="moodcake-font font-black" 
+                    style={{ 
+                      fill: "#F7D04B",
+                      stroke: "#2A2320",
+                      strokeWidth: "1px",
+                      fontSize: "56px",
+                      fontWeight: "900",
+                      filter: "drop-shadow(3px 3px 6px rgba(0,0,0,0.3))"
+                    }}>
+                <textPath href="#top-curve" startOffset="50%" textAnchor="middle">
+                  LITTLE ART
+                </textPath>
+              </text>
+              
+              {/* CORNER on bottom curve */}
+              <text className="moodcake-font font-black" 
+                    style={{ 
+                      fill: "#F7D04B",
+                      stroke: "#2A2320",
+                      strokeWidth: "1px",
+                      fontSize: "54px",
+                      fontWeight: "900",
+                      filter: "drop-shadow(3px 3px 6px rgba(0,0,0,0.3))"
+                    }}>
+                <textPath href="#bottom-curve" startOffset="50%" textAnchor="middle">
+                  CORNER
+                </textPath>
+              </text>
+            </svg>
+          </div>
+        </div>
+        
+        {/* The Comfy and Cozy Series - simple black text */}
+        <div className="bare-marker-font text-3xl text-[#2A2320] font-normal tracking-wide leading-tight mt-[-30px]">
+          <div>The Comfy and Cozy</div>
+          <div className="mt-[-16px]">Series</div>
+        </div>
+      </div>
+
       {/* Start Button */}
       <button
         onClick={onStartNow}
         className="w-fit max-w-md mx-auto py-2 px-7 bg-[#51C7B0] text-white font-baloo text-lg rounded-full font-extrabold tracking-wide transition-transform duration-200 shadow hover:scale-105 hover:bg-[#79e7cc] active:scale-95 border-2 border-[#2A2320] focus:outline-none select-none"
         style={{
-          letterSpacing: "0.04em",
-          marginTop: "0.7rem",
+          letterSpacing: "0.02em",
+          marginTop: "8rem",
           boxShadow: "0 2px 18px rgba(79,160,120,0.16)",
-          minWidth: "1px"
+          minWidth: "1px",
+          position: "relative",
+          zIndex: 30
         }}
       >
         START CREATING!

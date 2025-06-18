@@ -182,42 +182,48 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
           canvasRef={canvasRef}
         />
 
-        <div className="grid lg:grid-cols-4 gap-6">
-          <PaintToolbar
-            tool={tool}
-            setTool={setTool}
-            brushSize={brushSize}
-            setBrushSize={setBrushSize}
-            brushOpacity={brushOpacity}
-            setBrushOpacity={setBrushOpacity}
-            currentColor={currentColor}
-            setCurrentColor={setCurrentColor}
-            onUndo={handleUndo}
-            onRedo={handleRedo}
-            canUndo={canUndo}
-            canRedo={canRedo}
-            layers={layers}
-            activeLayerId={activeLayerId}
-            onAddLayer={addLayer}
-            onDeleteLayer={deleteLayer}
-            onDuplicateLayer={duplicateLayer}
-            onToggleLayerVisibility={toggleLayerVisibility}
-            onSelectLayer={setActiveLayerId}
-            onMoveLayer={moveLayer}
-            onRenameLayer={renameLayer}
-            onChangeLayerOpacity={changeLayerOpacity}
-            onRasterizeAll={rasterizeAll}
-            onRasterizeVisible={rasterizeVisible}
-            onFlattenImage={flattenImage}
-          />
+        <div className="flex gap-4">
+          {/* Responsive toolbar */}
+          <div className="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 flex-shrink-0">
+            <PaintToolbar
+              tool={tool}
+              setTool={setTool}
+              brushSize={brushSize}
+              setBrushSize={setBrushSize}
+              brushOpacity={brushOpacity}
+              setBrushOpacity={setBrushOpacity}
+              currentColor={currentColor}
+              setCurrentColor={setCurrentColor}
+              onUndo={handleUndo}
+              onRedo={handleRedo}
+              canUndo={canUndo}
+              canRedo={canRedo}
+              layers={layers}
+              activeLayerId={activeLayerId}
+              onAddLayer={addLayer}
+              onDeleteLayer={deleteLayer}
+              onDuplicateLayer={duplicateLayer}
+              onToggleLayerVisibility={toggleLayerVisibility}
+              onSelectLayer={setActiveLayerId}
+              onMoveLayer={moveLayer}
+              onRenameLayer={renameLayer}
+              onChangeLayerOpacity={changeLayerOpacity}
+              onRasterizeAll={rasterizeAll}
+              onRasterizeVisible={rasterizeVisible}
+              onFlattenImage={flattenImage}
+            />
+          </div>
 
-          <PaintCanvas
-            canvasRef={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={stopDrawing}
-            onMouseLeave={stopDrawing}
-          />
+          {/* Canvas takes the rest of the space */}
+          <div className="flex-1">
+            <PaintCanvas
+              canvasRef={canvasRef}
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+            />
+          </div>
         </div>
       </div>
 
