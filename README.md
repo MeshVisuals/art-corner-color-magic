@@ -9,21 +9,21 @@ Vanessa's Little Art Corner is an interactive digital art studio that combines r
 
 ## ✨ Features
 
-### 🤖 **Real AI Image Generation** (NEW!)
-- **Hugging Face Integration**: Powered by FLUX.1-dev, one of the best open-source image generators
-- **1000 Free Images/Month**: Generous free tier perfect for personal use
+### 🎨 **Image Generation Options**
+- **Multiple Generation Methods**: Support for various AI image generation services
+- **Free Space Integration**: Access to Hugging Face Spaces for image generation
 - **Automatic Coloring Book Optimization**: AI prompts enhanced for perfect line art
 - **Smart Prompt Enhancement**: Your simple prompts become detailed coloring book specifications
 - **Multiple Art Styles**: Bobby Goods, Pixar, Disney, and Manga styles
-- **Browser Password Manager Integration**: Securely save your API key across devices
-- **One-Click Regeneration**: Don't like the result? Try again with the same prompt
+- **Preset Image Library**: 14 beautiful pre-made coloring pages via Skip button
+- **Image Upload**: Upload your own images to color
 
 ### 🔧 **Smart Settings & Configuration**
 - **Dedicated Settings Page**: Clean configuration interface
-- **Step-by-Step Setup Guide**: Detailed Hugging Face account creation instructions
-- **API Key Status Indicator**: Always know if you're ready to generate
-- **Cross-Device Sync**: Save API keys in your browser's password manager
-- **Local Storage Backup**: Automatic fallback storage for API keys
+- **Flexible Generation Setup**: Support for different AI services and Spaces
+- **API Key Management**: Optional API key configuration for premium services
+- **Browser Password Manager Integration**: Securely save credentials across devices
+- **Local Storage Backup**: Automatic fallback storage for settings
 
 ### 🎨 **Professional Painting Tools**
 - **Brush Tool**: Paint with customizable size, opacity, and colors
@@ -68,24 +68,28 @@ Vanessa's Little Art Corner is an interactive digital art studio that combines r
 
 ## 🚀 How to Use
 
-### **First Time Setup**
-1. **Visit Settings**: Click "Settings" on the welcome screen
-2. **Get API Key**: Follow the detailed guide to create a free Hugging Face account
-3. **Save Securely**: Your browser will ask to save the API key in your password manager
-4. **You're Ready**: Green status indicator shows you're ready to generate!
+### **Getting Started**
+1. **Start Creating**: Click "START CREATING!" on the welcome screen
+2. **Choose Your Method**:
+   - **Generate**: Create AI image from your prompt (may require setup)
+   - **Upload**: Use your own image to color
+   - **Skip**: Pick from 14 beautiful preset coloring pages (recommended to start)
 
 ### **Creating Your Art**
-1. **Start Creating**: Click "START CREATING!" on the welcome screen
-2. **Enter Your Idea**: Type what you want to see (left column)
-3. **Choose Style**: Pick from Bobby Goods, Pixar, Disney, or Manga (right column)
-4. **Generate Options** (right column):
-   - **Generate**: Create AI image from your prompt
-   - **Upload**: Use your own image
-   - **Skip**: Pick from 14 preset coloring pages
-5. **Regenerate**: Don't like the result? Click the redo button to try again
-6. **Color It**: Click "Color This!" to enter painting mode
-7. **Paint**: Use the compact toolbar to paint your masterpiece
-8. **Save**: Download your finished artwork!
+1. **Enter Your Idea**: Type what you want to see in the prompt box
+2. **Choose Style**: Pick from Bobby Goods, Pixar, Disney, or Manga styles
+3. **Generate or Skip**:
+   - **Generate**: Creates AI image (requires working AI service)
+   - **Upload**: Browse and select your own image
+   - **Skip**: Instantly get a random preset coloring page
+4. **Color It**: Click "Color This!" to enter painting mode
+5. **Paint**: Use the painting tools to bring your art to life
+6. **Save**: Download your finished masterpiece!
+
+### **Optional: AI Generation Setup**
+- **Visit Settings**: Click "Settings" to configure AI generation
+- **API Configuration**: Set up Hugging Face or other AI services for custom generation
+- **Note**: Skip button works without any setup required
 
 ## 🛠️ Technologies Used
 
@@ -96,10 +100,48 @@ Vanessa's Little Art Corner is an interactive digital art studio that combines r
 - **Radix UI** for advanced interactive elements
 - **Lucide React** for beautiful, consistent icons
 - **Canvas API** for high-performance drawing and painting
-- **Hugging Face Inference API** for real AI image generation
-- **FLUX.1-dev Model** for high-quality image generation
+- **Hugging Face Spaces** for AI image generation
+- **Multiple AI Models** support for various generation options
 - **Custom Font Integration** (Moodcake, LobsterTwo, BareMarker)
 - **Browser Password Manager API** for secure credential storage
+
+## 🚧 Current Development Status & Known Issues
+
+### **AI Generation Status**
+The app currently attempts to use Hugging Face Spaces for AI image generation but encounters several issues:
+
+### **Issues Encountered:**
+1. **Space Availability**: Many Spaces return 404 (not found) or 503 (service unavailable)
+2. **Queue System**: Some Spaces use queue systems instead of direct API calls
+3. **API Format Variations**: Different Spaces expect different parameter formats
+4. **CORS Restrictions**: Browser requests may be blocked by CORS policies
+
+### **Current Implementation:**
+- **File**: `src/components/GenerateScreen.tsx` (lines 129-149)
+- **Current Space**: `multimodalart-flux-lora-the-explorer.hf.space`
+- **Error**: "This API endpoint does not accept direct HTTP POST requests. Please join the queue to use this API."
+
+### **Attempted Solutions:**
+1. **FLUX.1-dev official Space** → 500 server error
+2. **Stable Diffusion 2.1 Space** → 403 forbidden
+3. **alvdansen-flux-dev** → 404 not found
+4. **SDXL Lightning** → 503 service unavailable
+5. **FLUX LoRA Explorer** → Queue system, not direct API
+
+### **Working Alternatives:**
+- ✅ **Skip Button**: Works perfectly with 14 preset images
+- ✅ **Image Upload**: Users can upload their own images
+- ✅ **Painting Tools**: Full painting functionality works
+
+### **For Future Development:**
+1. **Consider paid Hugging Face API** instead of free Spaces
+2. **Implement proper queue handling** for Spaces that support it
+3. **Add fallback to other AI services** (OpenAI DALL-E, Stability AI, etc.)
+4. **Create new Hugging Face account** for fresh API quota
+5. **Use `@gradio/client` package** for proper Space integration
+
+### **Current Recommendation:**
+Use the **Skip button** for reliable functionality while AI generation is being stabilized.
 
 ## 🎯 Perfect For
 
@@ -111,15 +153,15 @@ Vanessa's Little Art Corner is an interactive digital art studio that combines r
 
 ## 🌟 Key Highlights
 
-- **Real AI Generation**: Powered by state-of-the-art FLUX.1-dev model
+- **Multiple Generation Options**: AI generation, image upload, or preset library
 - **Zero Learning Curve**: Intuitive design that anyone can use immediately
-- **Free & Generous**: 1000 AI generations per month at no cost
-- **Secure & Private**: API keys saved in your browser's password manager
-- **Unlimited Creativity**: Generate endless unique images to color
+- **Works Immediately**: Skip button provides instant coloring pages
+- **Flexible Setup**: Optional AI configuration for custom generation
 - **Professional Tools**: Advanced painting features in a compact interface
 - **Cross-Platform**: Responsive design works on all devices
 - **Family-Friendly**: Safe, ad-free environment for creative expression
 - **Beautiful Design**: Custom fonts and floating animations create a magical experience
+- **No Barriers**: Start coloring immediately without any account setup
 
 ## 🚀 Deployment
 
