@@ -57,6 +57,14 @@ export const Settings = ({ onBack }: SettingsProps) => {
     localStorage.removeItem('hf_api_key');
   }
 
+  function handleSaveApiKey() {
+    if (apiKeyStatus === "valid" && apiKey) {
+      localStorage.setItem('hf_api_key', apiKey);
+      // Don't auto-navigate, let user manually go back
+      // This allows the browser to show the password save prompt
+    }
+  }
+
   return (
     <div className="min-h-[70vh] flex flex-col items-center py-10 px-3 relative overflow-hidden">
       <FloatingDecorBackground />
@@ -96,6 +104,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
             }}
             onValidate={handleValidateApiKey}
             onApiKeyKeyDown={handleApiKeyKeyDown}
+            onSave={handleSaveApiKey}
           />
 
           {apiKey && (

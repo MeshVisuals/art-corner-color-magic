@@ -59,13 +59,33 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Check for saved API key on component mount
+  // Check for saved API key on component mount and when window gains focus
   useEffect(() => {
-    const savedKey = localStorage.getItem('hf_api_key');
-    if (savedKey && validateApiKey(savedKey)) {
-      setApiKey(savedKey);
-      setHasApiKey(true);
-    }
+    const checkApiKey = () => {
+      const savedKey = localStorage.getItem('hf_api_key');
+      if (savedKey && validateApiKey(savedKey)) {
+        setApiKey(savedKey);
+        setHasApiKey(true);
+      } else {
+        setApiKey("");
+        setHasApiKey(false);
+      }
+    };
+
+    // Check immediately
+    checkApiKey();
+
+    // Also check when window gains focus (e.g., coming back from settings)
+    const handleFocus = () => checkApiKey();
+    window.addEventListener('focus', handleFocus);
+    
+    // Check periodically in case localStorage was updated by another tab
+    const interval = setInterval(checkApiKey, 1000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
   }, []);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -92,14 +112,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       return;
     }
 
-    if (!hasApiKey) {
-      toast({
-        title: "API Key Required!",
-        description: "Please configure your Hugging Face API key in Settings first.",
-        className: "bg-yellow-100 border-yellow-200 text-yellow-800"
-      });
-      return;
-    }
+    // Removed API key check since we're using free Spaces
 
     setLoading(true);
     setGeneratedUrl(null);
@@ -110,33 +123,60 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       const stylePrompt = STYLES.find(s => s.key === selectedStyle)?.label || "cartoon style";
       const enhancedPrompt = `${prompt}, ${stylePrompt} coloring book page, black and white line art, simple outlines, no shading`;
 
+      console.log("Making API request with prompt:", enhancedPrompt);
+      console.log("API Key starts with:", apiKey.substring(0, 10) + "...");
+      
       const response = await fetch(
-        "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+        "https://multimodalart-flux-lora-the-explorer.hf.space/gradio_api/run/generate_image",
         {
           headers: {
-            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
           method: "POST",
           body: JSON.stringify({
-            inputs: enhancedPrompt,
-            parameters: {
-              guidance_scale: 7.5,
-              num_inference_steps: 20,
-              width: 512,
-              height: 512
-            }
+            data: [
+              enhancedPrompt,  // prompt
+              "None",          // lora_selection
+              512,             // width  
+              512,             // height
+              4,               // num_inference_steps
+              3.5,             // guidance_scale
+              42               // seed
+            ],
+            fn_index: 0
           }),
         }
       );
 
+      console.log("Response status:", response.status);
+      console.log("Response headers:", response.headers);
+
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        console.log("Error response body:", errorText);
+        throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
-      const blob = await response.blob();
-      const imageUrl = URL.createObjectURL(blob);
-      setGeneratedUrl(imageUrl);
+      const result = await response.json();
+      console.log("FLUX Dev response:", result);
+      
+      // Handle FLUX response - typically returns image path or URL
+      if (result.data && result.data[0]) {
+        const imageData = result.data[0];
+        
+        // Check if it's a URL or file path
+        if (typeof imageData === 'string' && imageData.startsWith('http')) {
+          setGeneratedUrl(imageData);
+        } else if (typeof imageData === 'string' && imageData.startsWith('/')) {
+          // Convert relative path to full Space URL
+          const imageUrl = `https://black-forest-labs-flux-1-dev.hf.space/file=${imageData}`;
+          setGeneratedUrl(imageUrl);
+        } else {
+          setGeneratedUrl(imageData);
+        }
+      } else {
+        throw new Error("Unexpected response format from FLUX Space");
+      }
 
       toast({
         title: "Image generated!",
@@ -146,9 +186,25 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
 
     } catch (error) {
       console.error("Generation error:", error);
+      let errorMessage = "Please try again or check your API key.";
+      
+      if (error instanceof Error) {
+        if (error.message.includes('401')) {
+          errorMessage = "Invalid API key. Please check your settings.";
+        } else if (error.message.includes('402')) {
+          errorMessage = "API usage limit reached. You may need to upgrade your Hugging Face plan or wait for monthly reset.";
+        } else if (error.message.includes('503')) {
+          errorMessage = "Service temporarily unavailable. Try again in a moment.";
+        } else if (error.message.includes('429')) {
+          errorMessage = "Rate limit exceeded. Please wait before trying again.";
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+      }
+      
       toast({
         title: "Generation failed!",
-        description: "Please try again or check your API key.",
+        description: errorMessage,
         className: "bg-red-100 border-red-200 text-red-800"
       });
     } finally {
@@ -194,7 +250,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
         <Button
           variant="cartoonOutline"
           size="cartoon"
-          className="absolute left-5 top-5"
+          className="absolute -left-[80px] top-20"
           onClick={onBack}
           aria-label="Go Back"
         >
@@ -233,9 +289,9 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
         </div>
 
         {/* Three-column layout */}
-        <div className="grid grid-cols-3 gap-6 w-full max-w-7xl">
+        <div className="grid grid-cols-[10px_1fr_10px] gap-12 w-full max-w-full px-1">
           {/* LEFT COLUMN - Style Selector */}
-          <div className="space-y-4">
+          <div className="space-y-4 relative -left-[120px]">
             <StyleSelector
               selectedStyle={selectedStyle}
               setSelectedStyle={setSelectedStyle}
@@ -249,7 +305,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
           </div>
 
           {/* RIGHT COLUMN - Upload, Skip, Generate buttons */}
-          <div className="space-y-4">
+          <div className="space-y-10">
             <UploadAndSkipButtons
               onUploadClick={handleUploadClick}
               fileInputRef={fileInputRef}
@@ -268,7 +324,7 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
 
         {/* Prompt Input at Bottom - Full Width */}
         <div className="w-full max-w-4xl mt-6">
-          <PromptInput prompt={prompt} setPrompt={setPrompt} loading={loading} />
+          <PromptInput prompt={prompt} setPrompt={setPrompt} loading={loading} onEnter={handleGenerate} />
         </div>
       </div>
     </div>

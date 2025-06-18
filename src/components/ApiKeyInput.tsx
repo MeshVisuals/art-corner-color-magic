@@ -1,7 +1,8 @@
 
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { KeyRound, ArrowRight, Check, X, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { KeyRound, ArrowRight, Check, X, Loader2, Save } from "lucide-react";
 
 interface ApiKeyInputProps {
   apiKey: string;
@@ -9,6 +10,7 @@ interface ApiKeyInputProps {
   onApiKeyChange: (key: string) => void;
   onValidate: () => void;
   onApiKeyKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onSave?: () => void;
 }
 
 export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({
@@ -16,7 +18,8 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({
   apiKeyStatus,
   onApiKeyChange,
   onValidate,
-  onApiKeyKeyDown
+  onApiKeyKeyDown,
+  onSave
 }) => {
   let apiStatusIcon = null;
   let apiStatusMsg = "";
@@ -98,6 +101,19 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({
       <span className="text-xs text-green-600 ml-1 mt-1 block">
         💡 <span className="font-medium">Tip:</span> Your browser will ask if you want to save this API key in your password manager!
       </span>
+      
+      {apiKeyStatus === "valid" && onSave && (
+        <div className="mt-3 flex gap-2">
+          <Button
+            onClick={onSave}
+            size="sm"
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Save className="w-4 h-4 mr-1" />
+            Save & Continue
+          </Button>
+        </div>
+      )}
     </div>
     </form>
   );

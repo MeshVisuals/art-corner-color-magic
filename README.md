@@ -127,6 +127,23 @@ Vanessa's Little Art Corner is an interactive digital art studio that combines r
 - Node.js 18+ installed
 - npm or yarn package manager
 
+### Available Scripts
+
+The project includes the following npm scripts:
+
+```bash
+# Development
+npm run dev          # Start development server (available at http://localhost:5173)
+
+# Building
+npm run build        # Build for production
+npm run build:dev    # Build for development mode
+npm run preview      # Preview production build locally
+
+# Code Quality
+npm run lint         # Run ESLint to check code quality
+```
+
 ### Local Development
 
 ```bash
@@ -141,7 +158,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at `http://localhost:8080`
+The app will be available at `http://localhost:5173`
 
 ### Building for Production
 

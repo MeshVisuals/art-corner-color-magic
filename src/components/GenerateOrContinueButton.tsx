@@ -18,13 +18,13 @@ export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> =
   onContinue,
   onRedo
 }) => (
-  <div className="w-full mt-2 flex flex-col gap-2">
+  <div className="w-full mt-4 flex flex-col gap-1">
     {displayImageUrl ? (
       <>
         <Button
           onClick={onContinue}
           size="xs"
-          className="font-bold w-full"
+          className="w-32 h-8 text-xs font-bold"
           variant="cartoon"
         >
           Color This!
@@ -33,11 +33,11 @@ export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> =
           <Button
             onClick={onRedo}
             size="xs"
-            className="font-bold w-full"
+            className="w-32 h-8 text-xs font-bold"
             variant="cartoonOutline"
             title="Generate Another"
           >
-            <RotateCcw className="w-3 h-3 mr-2" />
+            <RotateCcw className="w-3 h-3 mr-1" />
             Generate Another
           </Button>
         )}
@@ -47,7 +47,7 @@ export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> =
         onClick={onGenerate}
         disabled={loading}
         size="xs"
-        className="w-full font-bold"
+        className="w-32 h-8 text-xs font-bold"
         variant="cartoon"
       >
         {loading ? (

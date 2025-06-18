@@ -6,15 +6,17 @@ interface PromptInputProps {
   prompt: string;
   setPrompt: (s: string) => void;
   loading: boolean;
+  onEnter?: () => void;
 }
 
 export const PromptInput: React.FC<PromptInputProps> = ({
   prompt,
   setPrompt,
-  loading
+  loading,
+  onEnter
 }) => (
   <div className="w-full flex flex-col gap-2">
-    <label htmlFor="prompt-input" className="font-semibold text-black/70">
+    <label htmlFor="prompt-input" className="font-semibold text-white">
       Enter your prompt
     </label>
     <Input
@@ -23,6 +25,12 @@ export const PromptInput: React.FC<PromptInputProps> = ({
       maxLength={100}
       value={prompt}
       onChange={e => setPrompt(e.target.value)}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && onEnter && !loading) {
+          e.preventDefault();
+          onEnter();
+        }
+      }}
       disabled={loading}
       id="prompt-input"
       data-testid="prompt-input"

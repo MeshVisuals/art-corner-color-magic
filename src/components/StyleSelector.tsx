@@ -13,7 +13,7 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
   setSelectedStyle,
   STYLES
 }) => (
-  <div className="w-full flex flex-col gap-1 mt-1 mb-1">
+  <div className="w-full flex flex-col gap-1">
     {STYLES.map(style => (
       <Button
         key={style.key}

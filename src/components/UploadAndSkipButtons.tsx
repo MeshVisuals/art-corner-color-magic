@@ -34,6 +34,9 @@ export const UploadAndSkipButtons: React.FC<UploadAndSkipButtonsProps> = ({
       style={{ display: "none" }}
       data-testid="file-upload"
     />
+    
+  
+    
     <Button
       variant="cartoonOutline"
       onClick={onSkip}

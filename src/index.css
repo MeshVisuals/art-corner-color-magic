@@ -159,7 +159,7 @@
     25% { 
       transform: translateY(-12px) rotate(8deg); 
       opacity: 1;
-    }
+    } 
     50% { 
       transform: translateY(-20px) rotate(-5deg); 
       opacity: 0.95;
@@ -188,9 +188,10 @@
 
 @font-face {
   font-family: 'LobsterTwo';
-  src: url('/fonts/lobster-two/LobsterTwo-Regular.otf') format('opentype');
+  src: url('/fonts/LobsterTwo-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -198,6 +199,7 @@
   src: url('/fonts/BareMarker-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -205,20 +207,21 @@
   src: url('/fonts/moodcake/Moodcake.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Classes for the fonts */
 .lobster-two-font {
-  font-family: 'LobsterTwo', sans-serif;
+  font-family: 'LobsterTwo', 'Lobster Two', cursive, serif;
 }
 
 .bare-marker-font {
-  font-family: 'BareMarker', sans-serif;
+  font-family: 'BareMarker', 'Marker Felt', cursive, sans-serif;
   font-weight: normal;
   text-shadow: 2px 2px 4px rgba(42, 35, 32, 0.5);
   letter-spacing: 0.05em;
 }
 
 .moodcake-font {
-  font-family: 'Moodcake', sans-serif;
+  font-family: 'Moodcake', 'Comic Sans MS', cursive, sans-serif;
 }
