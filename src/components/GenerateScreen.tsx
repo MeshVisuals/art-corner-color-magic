@@ -112,7 +112,15 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       return;
     }
 
-    // Removed API key check since we're using free Spaces
+    // Check for API key since we're using the proper Hugging Face API
+    if (!apiKey || !validateApiKey(apiKey)) {
+      toast({
+        title: "API Key Required!",
+        description: "Please configure your Hugging Face API key in settings.",
+        className: "bg-yellow-100 border-yellow-200 text-yellow-800"
+      });
+      return;
+    }
 
     setLoading(true);
     setGeneratedUrl(null);
@@ -127,23 +135,22 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       console.log("API Key starts with:", apiKey.substring(0, 10) + "...");
       
       const response = await fetch(
-        "https://multimodalart-flux-lora-the-explorer.hf.space/gradio_api/run/generate_image",
+        "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
         {
           headers: {
+            "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
           method: "POST",
           body: JSON.stringify({
-            data: [
-              enhancedPrompt,  // prompt
-              "None",          // lora_selection
-              512,             // width  
-              512,             // height
-              4,               // num_inference_steps
-              3.5,             // guidance_scale
-              42               // seed
-            ],
-            fn_index: 0
+            inputs: enhancedPrompt,
+            parameters: {
+              width: 512,
+              height: 512,
+              num_inference_steps: 4,
+              guidance_scale: 3.5,
+              seed: 42
+            }
           }),
         }
       );
@@ -157,25 +164,20 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
         throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
-      const result = await response.json();
-      console.log("FLUX Dev response:", result);
-      
-      // Handle FLUX response - typically returns image path or URL
-      if (result.data && result.data[0]) {
-        const imageData = result.data[0];
-        
-        // Check if it's a URL or file path
-        if (typeof imageData === 'string' && imageData.startsWith('http')) {
-          setGeneratedUrl(imageData);
-        } else if (typeof imageData === 'string' && imageData.startsWith('/')) {
-          // Convert relative path to full Space URL
-          const imageUrl = `https://black-forest-labs-flux-1-dev.hf.space/file=${imageData}`;
-          setGeneratedUrl(imageUrl);
-        } else {
-          setGeneratedUrl(imageData);
-        }
+      // Handle Hugging Face API response - returns image as blob
+      if (response.headers.get('content-type')?.includes('image')) {
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        setGeneratedUrl(imageUrl);
       } else {
-        throw new Error("Unexpected response format from FLUX Space");
+        const result = await response.json();
+        console.log("FLUX API response:", result);
+        
+        if (result.error) {
+          throw new Error(result.error);
+        } else {
+          throw new Error("Unexpected response format from Hugging Face API");
+        }
       }
 
       toast({

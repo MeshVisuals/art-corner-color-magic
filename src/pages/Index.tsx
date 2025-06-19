@@ -69,7 +69,9 @@ const Index = () => {
     <div 
       className="relative min-h-screen"
       style={{
-        background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
+        background: `linear-gradient(180deg, #67B6B2 0%, #67B6B2 60%, #F7BB48 100%)`,
+        minHeight: '100vh',
+        height: '100%'
       }}
     >
       {/* Absolute containers for overlapping fade screens */}

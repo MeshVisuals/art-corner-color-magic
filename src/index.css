@@ -1,10 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Definition of the design system for Vanessa's Little Art Corner */
 
@@ -88,8 +88,9 @@
 
   body {
     @apply text-foreground font-nunito;
-    background: linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%);
+    background: linear-gradient(180deg, #67B6B2 0%, #67B6B2 60%, #F7BB48 100%);
     min-height: 100vh;
+    height: 100%;
   }
 
   .font-balloony {
