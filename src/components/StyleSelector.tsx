@@ -13,13 +13,13 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
   setSelectedStyle,
   STYLES
 }) => (
-  <div className="w-full flex flex-col gap-1">
+  <div className="w-full flex flex-col gap-4 items-end">
     {STYLES.map(style => (
       <Button
         key={style.key}
         variant={selectedStyle === style.key ? "cartoon" : "cartoonOutline"}
         size="xs"
-        className="w-32 h-8 text-xs"
+        className="w-40 h-10 text-sm"
         type="button"
         onClick={() => setSelectedStyle(style.key)}
       >

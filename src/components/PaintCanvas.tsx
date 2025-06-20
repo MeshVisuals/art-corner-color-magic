@@ -52,10 +52,12 @@ export const PaintCanvas = ({
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="max-w-full h-auto rounded-2xl cursor-crosshair touch-none"
+        className="rounded-2xl cursor-crosshair touch-none"
         style={{ 
+          width: '80vw',
+          height: '80vw',
+          maxWidth: '90vh',
           maxHeight: '90vh',
-          maxWidth: '90%',
           border: '4px solid #2A2320',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
         }}

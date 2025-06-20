@@ -11,13 +11,14 @@ interface ColorPaletteProps {
 
 export const ColorPalette = ({ currentColor, setCurrentColor, colors }: ColorPaletteProps) => (
   <div>
-    <Label className="text-sm font-medium mb-3 block">Colors</Label>
+    <Label htmlFor={`color-swatch-${colors[0]}`} className="text-sm font-medium mb-3 block">Colors</Label>
     <Tooltip>
       <TooltipTrigger asChild>
-        <div className="grid grid-cols-5 gap-2 mb-3">
-          {colors.map(color => (
+        <div className="grid grid-cols-5 gap-2 mb-3" role="group" aria-labelledby="color-palette-label">
+          {colors.map((color, index) => (
             <button
               key={color}
+              id={index === 0 ? `color-swatch-${color}` : undefined}
               onClick={() => setCurrentColor(color)}
               className={`w-8 h-8 rounded-full border-2 transition-all ${
                 currentColor === color 
@@ -27,6 +28,7 @@ export const ColorPalette = ({ currentColor, setCurrentColor, colors }: ColorPal
               style={{ backgroundColor: color }}
               title={color}
               aria-label={`Use color ${color}`}
+              aria-pressed={currentColor === color}
               data-testid={`color-swatch-${color}`}
             />
           ))}

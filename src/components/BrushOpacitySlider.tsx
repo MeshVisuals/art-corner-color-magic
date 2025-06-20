@@ -21,6 +21,7 @@ export const BrushOpacitySlider = ({ value, onChange }: BrushOpacitySliderProps)
       </Tooltip>
     </Label>
     <Slider
+      id="brush-opacity-slider"
       value={[value]}
       onValueChange={v => onChange(v[0])}
       max={100}

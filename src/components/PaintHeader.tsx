@@ -37,7 +37,12 @@ export const PaintHeader = ({ onBack, onStartOver, canvasRef }: PaintHeaderProps
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
-        <h1 className="font-balloony text-2xl font-semibold text-foreground">
+        <h1 className="moodcake-font text-3xl font-black text-[#F7D04B]"
+            style={{ 
+              WebkitTextStroke: "1px #2A2320", 
+              textShadow: "4px 4px 0px #2A2320, -2px -2px 0px #2A2320, 2px -2px 0px #2A2320, -2px 2px 0px #2A2320",
+              filter: "drop-shadow(3px 3px 6px rgba(0,0,0,0.3))"
+            }}>
           Paint Your Art
         </h1>
       </div>

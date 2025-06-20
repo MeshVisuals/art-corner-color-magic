@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2, ImagePlus, RotateCcw } from "lucide-react";
+import { Loader2, ImagePlus, RotateCcw, Eye } from "lucide-react";
 
 interface GenerateOrContinueButtonProps {
   displayImageUrl?: string | null;
@@ -9,6 +9,7 @@ interface GenerateOrContinueButtonProps {
   onGenerate: () => void;
   onContinue: () => void;
   onRedo?: () => void;
+  onRevealPrompt?: () => void;
 }
 
 export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> = ({
@@ -16,15 +17,16 @@ export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> =
   loading,
   onGenerate,
   onContinue,
-  onRedo
+  onRedo,
+  onRevealPrompt
 }) => (
-  <div className="w-full mt-4 flex flex-col gap-1">
+  <div className="w-full mt-6 flex flex-col gap-4 items-end">
     {displayImageUrl ? (
       <>
         <Button
           onClick={onContinue}
           size="xs"
-          className="w-32 h-8 text-xs font-bold"
+          className="w-40 h-10 text-sm font-bold"
           variant="cartoon"
         >
           Color This!
@@ -33,12 +35,24 @@ export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> =
           <Button
             onClick={onRedo}
             size="xs"
-            className="w-32 h-8 text-xs font-bold"
+            className="w-40 h-10 text-sm font-bold flex gap-2 justify-center"
             variant="cartoonOutline"
             title="Generate Another"
           >
-            <RotateCcw className="w-3 h-3 mr-1" />
+            <RotateCcw className="w-4 h-4" />
             Generate Another
+          </Button>
+        )}
+        {onRevealPrompt && (
+          <Button
+            onClick={onRevealPrompt}
+            size="xs"
+            className="w-40 h-10 text-sm font-bold flex gap-2 justify-center"
+            variant="cartoonOutline"
+            title="Reveal Prompt"
+          >
+            <Eye className="w-4 h-4" />
+            Reveal Prompt
           </Button>
         )}
       </>
@@ -47,16 +61,16 @@ export const GenerateOrContinueButton: React.FC<GenerateOrContinueButtonProps> =
         onClick={onGenerate}
         disabled={loading}
         size="xs"
-        className="w-32 h-8 text-xs font-bold"
+        className="w-40 h-10 text-sm font-bold flex gap-2 justify-center"
         variant="cartoon"
       >
         {loading ? (
           <>
-            <Loader2 className="animate-spin" /> Generating...
+            <Loader2 className="animate-spin w-4 h-4" /> Generating...
           </>
         ) : (
           <>
-            <ImagePlus /> Generate
+            <ImagePlus className="w-4 h-4" /> Generate
           </>
         )}
       </Button>

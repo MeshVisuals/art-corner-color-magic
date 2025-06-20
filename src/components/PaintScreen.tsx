@@ -154,9 +154,6 @@ export const PaintScreen = ({ imageUrl, onBack, onStartOver }: PaintScreenProps)
   return (
     <div 
       className="min-h-screen p-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
-      }}
     >
       {/* Floating Decorations */}
       <div className="pointer-events-none absolute inset-0 w-full h-full z-10">

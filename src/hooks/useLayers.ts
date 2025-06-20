@@ -12,9 +12,34 @@ export const useLayers = (initialImageUrl: string) => {
     if (isBackground && initialImageUrl) {
       const img = new Image();
       img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx?.drawImage(img, 0, 0);
+        // Set canvas to fixed square size
+        const canvasSize = 1200;
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+        
+        if (ctx) {
+          // Clear canvas first
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          
+          // Calculate scale to fit image in canvas while maintaining aspect ratio
+          const scale = Math.min(canvasSize / img.width, canvasSize / img.height);
+          const scaledWidth = img.width * scale;
+          const scaledHeight = img.height * scale;
+          
+          // Center the scaled image
+          const x = (canvasSize - scaledWidth) / 2;
+          const y = (canvasSize - scaledHeight) / 2;
+          
+          console.log("🖼️ Drawing image:", { 
+            originalSize: `${img.width}x${img.height}`, 
+            scaledSize: `${scaledWidth}x${scaledHeight}`, 
+            position: `${x},${y}`,
+            canvasSize 
+          });
+          
+          // Draw the scaled and centered image
+          ctx.drawImage(img, 0, 0, img.width, img.height, x, y, scaledWidth, scaledHeight);
+        }
       };
       img.src = initialImageUrl;
     }

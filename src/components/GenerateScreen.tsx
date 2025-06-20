@@ -16,10 +16,10 @@ interface GenerateScreenProps {
 }
 
 const STYLES = [
-  { key: "bobby_goods", label: "Bobby Goods" },
-  { key: "pixar", label: "Pixar" },
-  { key: "disney", label: "Disney" },
-  { key: "manga", label: "Manga" },
+  { key: "bobby_goods", label: "Bobby Goods", prompt: "cute, comforting, nostalgic, hand-drawn childlike style with soft imperfections, smooth curves and organic asymmetry, expressive and slightly quirky facial features, playful pose with whimsical movement, clean open composition with no background, but allow for light ambient storytelling elements such as sparkles, plants, or small props, thick bold outlines with a subtle sketch feel, evoke warmth and whimsy like Bobbie Goods / Coco Wyo coloring books, line art only, black and white, no shading, coloring book page" },
+  { key: "pixar", label: "Pixar", prompt: "Pixar character design style, clean polished cartoon concept-art line drawing, strong Pixar style emphasis, expressive oversized eyes or heads, subtly exaggerated rounded proportions, emotional and playful composition like Pixar animation sketches, square-format, smooth contour lines with a slight sketch feel, line art only, black and white, no shading, no background, coloring book page" },
+  { key: "ghibli", label: "Ghibli", prompt: "Studio Ghibli character design style, expressive yet simple features with large emotive eyes and minimal nose/mouth, organic hand-drawn linework with subtle texture and variable stroke width, clean open composition with \"Ma\" (gentle empty space), light micro-environment details like leaves, grass, floating petals or wind lines, evoke quiet everyday wonder and nostalgia, square-format, line art only, black and white, no shading, coloring book page" },
+  { key: "manga", label: "Manga", prompt: "Manga character design style, expressive large eyes and minimal nose/mouth, dynamic emotion iconography like sweatdrops, surprise lines or motion streaks, strong variable line weights—bold silhouette outlines with fine internal details, stylized poses or chibi proportions encouraged, clean minimal composition, hard black line art only with no screentones or gray fill, square-format, line art only, black and white, no shading, coloring book page" },
 ];
 
 // All coloring page images from lovable-uploads folder (excluding Vanessa.png)
@@ -57,34 +57,43 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   const [loading, setLoading] = useState(false);
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [enhancedPrompt, setEnhancedPrompt] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Check for saved API key on component mount and when window gains focus
+  // Check for saved API key only when window gains focus (coming back from settings)
   useEffect(() => {
     const checkApiKey = () => {
+      console.log("🔑 checkApiKey called");
       const savedKey = localStorage.getItem('hf_api_key');
-      if (savedKey && validateApiKey(savedKey)) {
-        setApiKey(savedKey);
-        setHasApiKey(true);
-      } else {
-        setApiKey("");
-        setHasApiKey(false);
-      }
+      const isValid = savedKey && validateApiKey(savedKey);
+      
+      // Only update state if values actually changed
+      setApiKey(prev => {
+        const newKey = isValid ? savedKey : "";
+        if (prev !== newKey) {
+          console.log("🔑 API key state changing:", prev, "->", newKey ? "***" : "empty");
+        }
+        return prev !== newKey ? newKey : prev;
+      });
+      setHasApiKey(prev => {
+        const newHasKey = !!isValid;
+        if (prev !== newHasKey) {
+          console.log("🔑 hasApiKey state changing:", prev, "->", newHasKey);
+        }
+        return prev !== newHasKey ? newHasKey : prev;
+      });
     };
 
-    // Check immediately
+    // Initial check on mount
     checkApiKey();
 
-    // Also check when window gains focus (e.g., coming back from settings)
+    // Check when window gains focus (returning from settings)
     const handleFocus = () => checkApiKey();
     window.addEventListener('focus', handleFocus);
-    
-    // Check periodically in case localStorage was updated by another tab
-    const interval = setInterval(checkApiKey, 1000);
 
     return () => {
       window.removeEventListener('focus', handleFocus);
-      clearInterval(interval);
     };
   }, []);
 
@@ -112,48 +121,111 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       return;
     }
 
-    // Check for API key since we're using the proper Hugging Face API
-    if (!apiKey || !validateApiKey(apiKey)) {
-      toast({
-        title: "API Key Required!",
-        description: "Please configure your Hugging Face API key in settings.",
-        className: "bg-yellow-100 border-yellow-200 text-yellow-800"
-      });
-      return;
-    }
+    // AI Horde doesn't require API key - using anonymous access
 
     setLoading(true);
     setGeneratedUrl(null);
     setUploadedUrl(null);
 
     try {
-      // Create enhanced prompt with style
-      const stylePrompt = STYLES.find(s => s.key === selectedStyle)?.label || "cartoon style";
-      const enhancedPrompt = `${prompt}, ${stylePrompt} coloring book page, black and white line art, simple outlines, no shading`;
-
-      console.log("Making API request with prompt:", enhancedPrompt);
-      console.log("API Key starts with:", apiKey.substring(0, 10) + "...");
+      // Create enhanced prompt - Bobby Goods includes full specification, others need coloring book modifiers
+      const selectedStyleObj = STYLES.find(s => s.key === selectedStyle);
+      const stylePrompt = selectedStyleObj?.prompt || "cartoon style";
       
-      const response = await fetch(
-        "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
-        {
-          headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
+      let generatedEnhancedPrompt;
+      if (selectedStyle === "bobby_goods" || selectedStyle === "pixar" || selectedStyle === "ghibli" || selectedStyle === "manga") {
+        // All detailed style prompts already include coloring book specifications
+        generatedEnhancedPrompt = `${prompt}, ${stylePrompt}`;
+      } else {
+        // Fallback for any future styles that need coloring book modifiers added
+        generatedEnhancedPrompt = `${prompt}, ${stylePrompt}, coloring book page, black and white line art, thick outlines, no shading`;
+      }
+      
+      // Store the enhanced prompt for the reveal functionality
+      setEnhancedPrompt(generatedEnhancedPrompt);
+
+      console.log("Making AI Horde request with prompt:", generatedEnhancedPrompt);
+      
+      // Using AI Horde - completely free unlimited API
+      console.log("🚀 Making AI Horde request...");
+      
+      // Step 1: Submit generation request to AI Horde
+      const submitResponse = await fetch("https://stablehorde.net/api/v2/generate/async", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "0000000000" // Anonymous usage
+        },
+        body: JSON.stringify({
+          prompt: generatedEnhancedPrompt,
+          params: {
+            width: 512,
+            height: 512,
+            steps: 30,
+            cfg_scale: 12,
+            sampler_name: "k_dpmpp_2m",
+            n: 1
           },
-          method: "POST",
-          body: JSON.stringify({
-            inputs: enhancedPrompt,
-            parameters: {
-              width: 512,
-              height: 512,
-              num_inference_steps: 4,
-              guidance_scale: 3.5,
-              seed: 42
-            }
-          }),
+          nsfw: false,
+          models: ["Deliberate"],
+          r2: true
+        })
+      });
+
+      if (!submitResponse.ok) {
+        throw new Error(`AI Horde submit failed: ${submitResponse.status}`);
+      }
+
+      const submitData = await submitResponse.json();
+      const requestId = submitData.id;
+      console.log("✅ Request submitted, ID:", requestId);
+
+      // Step 2: Poll for completion
+      let attempts = 0;
+      const maxAttempts = 60; // 5 minutes max
+      
+      while (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds
+        
+        const checkResponse = await fetch(`https://stablehorde.net/api/v2/generate/check/${requestId}`);
+        if (!checkResponse.ok) {
+          throw new Error(`AI Horde check failed: ${checkResponse.status}`);
         }
-      );
+        
+        const checkData = await checkResponse.json();
+        console.log("📊 Status check:", checkData);
+        
+        if (checkData.done) {
+          // Step 3: Get the generated image
+          const statusResponse = await fetch(`https://stablehorde.net/api/v2/generate/status/${requestId}`);
+          if (!statusResponse.ok) {
+            throw new Error(`AI Horde status failed: ${statusResponse.status}`);
+          }
+          
+          const statusData = await statusResponse.json();
+          if (statusData.generations && statusData.generations.length > 0) {
+            const imageUrl = statusData.generations[0].img;
+            console.log("🖼️ Image generated:", imageUrl);
+            
+            // AI Horde returns direct image URLs, not base64
+            setGeneratedUrl(imageUrl);
+            setLoading(false);
+            
+            toast({
+              title: "Image generated!",
+              description: "Your coloring page is ready!",
+              className: "bg-green-100 border-green-200 text-green-800"
+            });
+            return;
+          }
+        }
+        
+        attempts++;
+      }
+      
+      throw new Error("Generation timed out after 5 minutes");
+      
+      console.log("✅ Fetch completed, response status:", response.status);
 
       console.log("Response status:", response.status);
       console.log("Response headers:", response.headers);
@@ -165,9 +237,33 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
       }
 
       // Handle Hugging Face API response - returns image as blob
+      console.log("Response content-type:", response.headers.get('content-type'));
+      console.log("Response size:", response.headers.get('content-length'));
+      
       if (response.headers.get('content-type')?.includes('image')) {
         const blob = await response.blob();
+        console.log("Blob size:", blob.size, "Blob type:", blob.type);
+        
+        // Check if it's actually an image by reading first few bytes
+        const arrayBuffer = await blob.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        const firstBytes = Array.from(uint8Array.slice(0, 10)).map(b => b.toString(16).padStart(2, '0')).join(' ');
+        console.log("First 10 bytes:", firstBytes);
+        
+        // JPEG should start with FF D8, PNG with 89 50 4E 47
+        if (uint8Array[0] !== 0xFF || uint8Array[1] !== 0xD8) {
+          // Not a valid JPEG, let's see what it actually contains
+          const text = new TextDecoder().decode(arrayBuffer.slice(0, 200));
+          console.log("Response appears to be text, not image:", text);
+          throw new Error("API returned text instead of image: " + text.substring(0, 100));
+        }
+        
+        if (blob.size === 0) {
+          throw new Error("Received empty image blob from API");
+        }
+        
         const imageUrl = URL.createObjectURL(blob);
+        console.log("Created image URL:", imageUrl);
         setGeneratedUrl(imageUrl);
       } else {
         const result = await response.json();
@@ -188,10 +284,14 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
 
     } catch (error) {
       console.error("Generation error:", error);
+      console.error("Error type:", error instanceof Error ? error.name : typeof error);
+      console.error("Error message:", error instanceof Error ? error.message : String(error));
       let errorMessage = "Please try again or check your API key.";
       
       if (error instanceof Error) {
-        if (error.message.includes('401')) {
+        if (error.name === 'AbortError') {
+          errorMessage = "Request timed out after 30 seconds. Please try again.";
+        } else if (error.message.includes('401')) {
           errorMessage = "Invalid API key. Please check your settings.";
         } else if (error.message.includes('402')) {
           errorMessage = "API usage limit reached. You may need to upgrade your Hugging Face plan or wait for monthly reset.";
@@ -229,21 +329,47 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
   function handleSkip() {
     // Select a random preset image from the new uploads
     const randomImage = PRESET_IMAGES[Math.floor(Math.random() * PRESET_IMAGES.length)];
+    
+    console.log("🎲 Skip button pressed, selected image:", randomImage);
+    
+    // Show the image in the generation screen first, then user can click Color This
+    setUploadedUrl(randomImage);
+    setGeneratedUrl(null);
+    setShowPrompt(false);
+    setLoading(false);
+    
     toast({
       title: "Skipped image generation!",
       description: "Here's a beautiful coloring page to get you started!",
       className: "bg-white border-gray-300 text-gray-900"
     });
-    onColorImage(randomImage);
   }
 
   function handleRedo() {
     setGeneratedUrl(null);
     setUploadedUrl(null);
+    setShowPrompt(false);
+    setEnhancedPrompt("");
+  }
+
+  function handleRevealPrompt() {
+    setShowPrompt(true);
   }
 
 
   const displayImageUrl = uploadedUrl || generatedUrl;
+  
+  // Only log when image state changes, not on every keystroke
+  React.useEffect(() => {
+    if (displayImageUrl || uploadedUrl || generatedUrl) {
+      console.log("🖼️ IMAGE STATE:", {
+        displayImageUrl, 
+        uploadedUrl, 
+        generatedUrl,
+        timestamp: new Date().toLocaleTimeString()
+      });
+    }
+  }, [displayImageUrl, uploadedUrl, generatedUrl]);
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center py-10 px-3 relative overflow-hidden">
@@ -290,43 +416,55 @@ export const GenerateScreen: React.FC<GenerateScreenProps> = ({
           </h2>
         </div>
 
-        {/* Three-column layout */}
-        <div className="grid grid-cols-[10px_1fr_10px] gap-12 w-full max-w-full px-1">
-          {/* LEFT COLUMN - Style Selector */}
-          <div className="space-y-4 relative -left-[120px]">
-            <StyleSelector
-              selectedStyle={selectedStyle}
-              setSelectedStyle={setSelectedStyle}
-              STYLES={STYLES}
-            />
+        {/* Two Column Layout - 1/3 controls, 2/3 image */}
+        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-16">
+          {/* LEFT COLUMN - Controls */}
+          <div className="space-y-10 flex flex-col items-end pr-8">
+            {/* Prompt Input */}
+            <div className="w-full flex justify-end">
+              <div className="w-full max-w-lg">
+                <PromptInput prompt={prompt} setPrompt={setPrompt} loading={loading} onEnter={handleGenerate} />
+              </div>
+            </div>
+
+            {/* Style Selector */}
+            <div className="w-full flex justify-end">
+              <StyleSelector
+                selectedStyle={selectedStyle}
+                setSelectedStyle={setSelectedStyle}
+                STYLES={STYLES}
+              />
+            </div>
+
+            {/* Upload, Skip, Generate buttons */}
+            <div className="w-full space-y-8 flex flex-col items-end">
+              <UploadAndSkipButtons
+                onUploadClick={handleUploadClick}
+                fileInputRef={fileInputRef}
+                onFileChange={handleFileChange}
+                onSkip={handleSkip}
+              />
+              <GenerateOrContinueButton
+                displayImageUrl={displayImageUrl}
+                loading={loading}
+                onGenerate={handleGenerate}
+                onContinue={handleContinue}
+                onRedo={handleRedo}
+                onRevealPrompt={generatedUrl ? handleRevealPrompt : undefined}
+              />
+            </div>
           </div>
 
-          {/* CENTER COLUMN - Image Display */}
-          <div className="space-y-4">
-            <ImageDisplay loading={loading} displayImageUrl={displayImageUrl} prompt={prompt} />
-          </div>
-
-          {/* RIGHT COLUMN - Upload, Skip, Generate buttons */}
-          <div className="space-y-10">
-            <UploadAndSkipButtons
-              onUploadClick={handleUploadClick}
-              fileInputRef={fileInputRef}
-              onFileChange={handleFileChange}
-              onSkip={handleSkip}
-            />
-            <GenerateOrContinueButton
-              displayImageUrl={displayImageUrl}
-              loading={loading}
-              onGenerate={handleGenerate}
-              onContinue={handleContinue}
-              onRedo={handleRedo}
+          {/* RIGHT COLUMN - Image Display (spans 2 columns = 2/3) */}
+          <div className="col-span-2 w-full flex justify-end items-start pl-8">
+            <ImageDisplay 
+              loading={loading} 
+              displayImageUrl={displayImageUrl} 
+              prompt={prompt} 
+              showPrompt={showPrompt}
+              enhancedPrompt={enhancedPrompt}
             />
           </div>
-        </div>
-
-        {/* Prompt Input at Bottom - Full Width */}
-        <div className="w-full max-w-4xl mt-6">
-          <PromptInput prompt={prompt} setPrompt={setPrompt} loading={loading} onEnter={handleGenerate} />
         </div>
       </div>
     </div>

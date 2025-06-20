@@ -11,20 +11,21 @@ interface ToolSelectorProps {
 
 export const ToolSelector = ({ tool, setTool }: ToolSelectorProps) => (
   <div>
-    <Label className="text-sm font-medium mb-3 block">Tools</Label>
-    <div className="flex gap-2">
+    <Label htmlFor="tool-brush" className="text-sm font-medium mb-3 block">Tools</Label>
+    <div className="flex gap-2" role="group" aria-labelledby="tool-selector-label">
       <Tooltip>
         <TooltipTrigger asChild>
           <span>
             <Button
+              id="tool-brush"
               variant={tool === 'brush' ? 'cartoon' : 'cartoonOutline'}
               size="cartoon"
               onClick={() => setTool('brush')}
-              className="flex-1"
+              className="w-12 h-12 rounded-full p-0 flex items-center justify-center"
               data-testid="tool-brush"
+              aria-pressed={tool === 'brush'}
             >
-              <Brush className="w-4 h-4 mr-1" />
-              Brush
+              <Brush className="w-5 h-5" />
             </Button>
           </span>
         </TooltipTrigger>
@@ -39,11 +40,11 @@ export const ToolSelector = ({ tool, setTool }: ToolSelectorProps) => (
               variant={tool === 'eraser' ? 'cartoon' : 'cartoonOutline'}
               size="cartoon"
               onClick={() => setTool('eraser')}
-              className="flex-1"
+              className="w-12 h-12 rounded-full p-0 flex items-center justify-center"
               data-testid="tool-eraser"
+              aria-pressed={tool === 'eraser'}
             >
-              <Eraser className="w-4 h-4 mr-1" />
-              Eraser
+              <Eraser className="w-5 h-5" />
             </Button>
           </span>
         </TooltipTrigger>

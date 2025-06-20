@@ -38,15 +38,18 @@ export const ColorPicker = ({ currentColor, onColorChange }: ColorPickerProps) =
       </PopoverTrigger>
       <PopoverContent className="w-64">
         <div className="space-y-4">
-          <Label className="text-sm font-medium">Pick a custom color</Label>
+          <Label htmlFor="color-picker-input" className="text-sm font-medium">Pick a custom color</Label>
           <div className="flex gap-2 items-center">
             <Input
+              id="color-picker-input"
               type="color"
               value={customColor}
               onChange={handleColorChange}
               className="w-16 h-10 p-1 rounded-lg"
+              aria-label="Color picker"
             />
             <Input
+              id="color-hex-input"
               type="text"
               value={customColor}
               onChange={(e) => {
@@ -57,6 +60,7 @@ export const ColorPicker = ({ currentColor, onColorChange }: ColorPickerProps) =
               }}
               placeholder="#FF6B6B"
               className="flex-1"
+              aria-label="Hex color code"
             />
           </div>
           <div className="text-xs text-muted-foreground">

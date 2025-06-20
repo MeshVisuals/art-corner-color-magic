@@ -88,8 +88,8 @@
 
   body {
     @apply text-foreground font-nunito;
-    background: linear-gradient(180deg, #67B6B2 0%, #67B6B2 60%, #F7BB48 100%);
-    min-height: 100vh;
+    background: linear-gradient(180deg, rgba(103, 182, 178, 1) 40%, rgba(247, 187, 72, 1) 80%, rgba(103, 182, 178, 1) 100%);
+    min-height: 150vh;
     height: 100%;
   }
 

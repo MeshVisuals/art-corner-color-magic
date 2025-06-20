@@ -74,7 +74,7 @@ export const LayersPanel = ({
         </Tooltip>
       </div>
 
-      <div className="space-y-2 max-h-48 overflow-y-auto">
+      <div className="space-y-2 max-h-48 overflow-y-auto" role="group">
         {layers.slice().reverse().map((layer, index) => (
           <div
             key={layer.id}

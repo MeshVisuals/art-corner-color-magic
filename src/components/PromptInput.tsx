@@ -20,7 +20,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
       Enter your prompt
     </label>
     <Input
-      className="text-lg md:text-base bg-purple-50 border-purple-200 focus:border-purple-300 focus:ring-purple-200"
+      className="text-lg md:text-base bg-purple-50 border-purple-200 focus:border-purple-300 focus:ring-purple-200 h-16 text-lg px-6"
       placeholder="Describe a picture to create (e.g., Cute elephant flying a kite!)"
       maxLength={100}
       value={prompt}

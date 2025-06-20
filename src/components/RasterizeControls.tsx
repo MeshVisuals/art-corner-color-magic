@@ -43,7 +43,7 @@ export const RasterizeControls = ({
   return (
     <div>
       <Label className="text-sm font-medium mb-3 block">Rasterize</Label>
-      <div className="space-y-2">
+      <div className="space-y-2" role="group">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button

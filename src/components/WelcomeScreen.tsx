@@ -292,9 +292,6 @@ export const WelcomeScreen = ({ onStartNow, onSettings }: WelcomeScreenProps) =>
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-2 py-8 relative overflow-x-hidden"
-      style={{
-        background: `linear-gradient(180deg, #67B6B2 75%, #F7BB48 100%)`,
-      }}
     >
       {/* Vanessa Image Layer */}
       <div className="absolute inset-0 w-full h-full z-10 flex items-end justify-center">
@@ -366,7 +363,7 @@ export const WelcomeScreen = ({ onStartNow, onSettings }: WelcomeScreenProps) =>
       </div>
 
       {/* Logo Text Components matching the design */}
-      <div className="text-center mb-8 relative z-30 mt-[-68px]">
+      <div className="text-center mb-16 relative z-30 mt-[-30px]">
         {/* Vanessa's - cursive script style with burgundy color and black outline */}
         <div className="lobster-two-font text-7xl font-bold text-[#d42c75] tracking-wide mb-[-10px]" 
              style={{ 
@@ -432,7 +429,7 @@ export const WelcomeScreen = ({ onStartNow, onSettings }: WelcomeScreenProps) =>
         className="w-fit max-w-md mx-auto py-2 px-7 bg-[#51C7B0] text-white font-baloo text-lg rounded-full font-extrabold tracking-wide transition-transform duration-200 shadow hover:scale-105 hover:bg-[#79e7cc] active:scale-95 border-2 border-[#2A2320] focus:outline-none select-none"
         style={{
           letterSpacing: "0.02em",
-          marginTop: "8rem",
+          marginTop: "8.5rem",
           boxShadow: "0 2px 18px rgba(79,160,120,0.16)",
           minWidth: "1px",
           position: "relative",

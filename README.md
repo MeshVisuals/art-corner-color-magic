@@ -105,43 +105,48 @@ Vanessa's Little Art Corner is an interactive digital art studio that combines r
 - **Custom Font Integration** (Moodcake, LobsterTwo, BareMarker)
 - **Browser Password Manager API** for secure credential storage
 
-## 🚧 Current Development Status & Known Issues
+## ⚠️ **Current Status: PARTIALLY FUNCTIONAL**
 
-### **AI Generation Status**
-The app currently attempts to use Hugging Face Spaces for AI image generation but encounters several issues:
-
-### **Issues Encountered:**
-1. **Space Availability**: Many Spaces return 404 (not found) or 503 (service unavailable)
-2. **Queue System**: Some Spaces use queue systems instead of direct API calls
-3. **API Format Variations**: Different Spaces expect different parameter formats
-4. **CORS Restrictions**: Browser requests may be blocked by CORS policies
-
-### **Current Implementation:**
-- **File**: `src/components/GenerateScreen.tsx` (lines 129-149)
-- **Current Space**: `multimodalart-flux-lora-the-explorer.hf.space`
-- **Error**: "This API endpoint does not accept direct HTTP POST requests. Please join the queue to use this API."
-
-### **Attempted Solutions:**
-1. **FLUX.1-dev official Space** → 500 server error
-2. **Stable Diffusion 2.1 Space** → 403 forbidden
-3. **alvdansen-flux-dev** → 404 not found
-4. **SDXL Lightning** → 503 service unavailable
-5. **FLUX LoRA Explorer** → Queue system, not direct API
-
-### **Working Alternatives:**
-- ✅ **Skip Button**: Works perfectly with 14 preset images
+### **What's Working:**
+- ✅ **AI Image Generation**: Unlimited free generation via AI Horde
+- ✅ **Four Professional Art Styles**: Bobby Goods, Pixar, Ghibli, and Manga
+- ✅ **Skip Button**: Shows images on generation screen
 - ✅ **Image Upload**: Users can upload their own images
-- ✅ **Painting Tools**: Full painting functionality works
+- ✅ **Professional Painting Tools**: Full painting functionality
+- ✅ **Clean Layout**: Simplified, user-friendly interface
+- ✅ **No API Keys Required**: Works completely anonymously
 
-### **For Future Development:**
-1. **Consider paid Hugging Face API** instead of free Spaces
-2. **Implement proper queue handling** for Spaces that support it
-3. **Add fallback to other AI services** (OpenAI DALL-E, Stability AI, etc.)
-4. **Create new Hugging Face account** for fresh API quota
-5. **Use `@gradio/client` package** for proper Space integration
+### **Known Issues - Need to Fix:**
 
-### **Current Recommendation:**
-Use the **Skip button** for reliable functionality while AI generation is being stabilized.
+#### 🚨 **Critical Issues:**
+1. **Paint Screen Image Loading**: Images don't display properly on the paint screen (3rd screen)
+   - Images load and show on generation screen (2nd screen) 
+   - When clicking "Color This!" to go to paint screen, image doesn't appear in canvas
+   - Canvas shows empty/white background instead of the image
+   - Issue affects both generated and skipped images
+
+#### 🔧 **UI Issues:**
+2. **Prompt Input Field Too Small**: The prompt input field is still very small and needs to be enlarged significantly
+3. **Button Spacing Inconsistent**: Upload/Skip/Generate buttons are not evenly spaced like the style selector buttons
+4. **Skip Button Workflow**: Skip should show image on generation screen first (currently working) before going to paint
+
+#### 🎯 **Technical Root Causes:**
+- **Canvas Image Positioning**: Image centering/scaling logic in paint canvas not working correctly
+- **Layer Initialization**: Background layer may not be properly loading the image
+- **Image URL Passing**: Image URL might not be correctly passed between screens
+
+### **Art Styles Available:**
+1. **Bobby Goods**: Hand-drawn, whimsical style with organic charm
+2. **Pixar**: Clean concept art with expressive character design  
+3. **Ghibli**: Studio Ghibli style with organic linework and "Ma" composition
+4. **Manga**: Dynamic anime style with emotion iconography and variable line weights
+
+### **Technical Implementation:**
+- **AI Service**: AI Horde (stablehorde.net) - free, unlimited, reliable
+- **Models**: 200+ Stable Diffusion models available
+- **Queue System**: Intelligent priority-based generation (30-60 seconds)
+- **Image Quality**: Up to 3072x3072 resolution support
+- **Cost**: $0 forever - completely free unlimited generation
 
 ## 🎯 Perfect For
 

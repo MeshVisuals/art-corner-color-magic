@@ -21,6 +21,7 @@ export const BrushSizeSlider = ({ value, onChange }: BrushSizeSliderProps) => (
       </Tooltip>
     </Label>
     <Slider
+      id="brush-size-slider"
       value={[value]}
       onValueChange={v => onChange(v[0])}
       max={50}

@@ -16,15 +16,15 @@ export const UploadAndSkipButtons: React.FC<UploadAndSkipButtonsProps> = ({
   onFileChange,
   onSkip
 }) => (
-  <div className="w-full flex flex-col gap-1 mb-2">
+  <div className="w-full flex flex-col gap-4 mb-4 items-end">
     <Button
       variant="cartoon"
       onClick={onUploadClick}
       type="button"
       size="xs"
-      className="w-32 h-8 flex gap-1 justify-center text-xs"
+      className="w-40 h-10 flex gap-2 justify-center text-sm"
     >
-      <Upload className="w-3 h-3" /> Upload
+      <Upload className="w-4 h-4" /> Upload
     </Button>
     <input
       type="file"
@@ -35,16 +35,14 @@ export const UploadAndSkipButtons: React.FC<UploadAndSkipButtonsProps> = ({
       data-testid="file-upload"
     />
     
-  
-    
     <Button
       variant="cartoonOutline"
       onClick={onSkip}
       type="button"
       size="xs"
-      className="w-32 h-8 flex gap-1 justify-center text-xs"
+      className="w-40 h-10 flex gap-2 justify-center text-sm"
     >
-      <SkipForward className="w-3 h-3" /> Skip
+      <SkipForward className="w-4 h-4" /> Skip
     </Button>
   </div>
 );
